@@ -31,6 +31,33 @@ async function addCategory(req, res) {
   res.status(201).json(await Category.create({ name: req.body.name }));
 }
 
+async function updateCategory(req, res) {
+  const { name } = req.body;
+  if (!name || !name.trim()) throw fail(400, 'Tên thể loại không được để trống.');
+  try {
+    const category = await Category.findByIdAndUpdate(
+      req.params.id, 
+      { name: name.trim() }, 
+      { returnDocument: 'after' }
+    );
+    if (!category) throw fail(404, 'Không tìm thấy thể loại.');
+    res.json(category);
+  } catch (error) {
+    if (error.code === 11000) throw fail(409, 'Tên thể loại này đã tồn tại.');
+    throw error;
+  }
+}
+
+async function deleteCategory(req, res) {
+  const bookCount = await Book.countDocuments({ category: req.params.id });
+  if (bookCount > 0) {
+    throw fail(400, `Không thể xóa! Đang có ${bookCount} cuốn sách thuộc thể loại này.`);
+  }
+  const category = await Category.findByIdAndDelete(req.params.id);
+  if (!category) throw fail(404, 'Không tìm thấy thể loại.');
+  res.json({ message: 'Đã xóa thể loại thành công.' });
+}
+
 async function categoryExists(id) {
   if (!id || !await Category.exists({ _id: id })) throw fail(400, 'Hãy chọn thể loại hợp lệ.');
 }
@@ -98,5 +125,5 @@ async function decideSale(req, res) {
   res.json(saved);
 }
 
-module.exports = { listBooks, getBook, listCategories, addCategory, saveBook, setVisibility, submitSale, decideSale, fail };
+module.exports = { listBooks, getBook, listCategories, addCategory, saveBook, setVisibility, submitSale, decideSale, updateCategory, deleteCategory, fail };
 

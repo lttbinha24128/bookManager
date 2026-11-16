@@ -8,6 +8,7 @@ export function ManageBooks() {
   const sales = useData('/admin/sales');
   const [tab, setTab] = useState(() => new URLSearchParams(window.location.search).get('tab') === 'sales' ? 'sales' : 'books');
   const [editing, setEditing] = useState(null);
+  const [editingCategory, setEditingCategory] = useState(null); 
   const refresh = () => { books.reload(); sales.reload(); };
   return <><h1>Quản lý sách</h1>
     <div className="tabs">
@@ -17,12 +18,37 @@ export function ManageBooks() {
     {tab === 'books' ? <>
       <div className="toolbar">
         <button onClick={() => setEditing({})}>Thêm đầu sách</button>
-        <details className="card card-body"><summary>Thêm thể loại</summary>
+                <details className="card card-body"><summary>Quản lý thể loại</summary>
+          {/* Form thêm mới */}
           <Form label="Thêm thể loại" onSave={async body => {
             await api('/admin/categories', { method: 'POST', body });
             categories.reload();
             return 'Đã thêm thể loại.';
           }}><label>Tên thể loại<input name="name" required maxLength="80" /></label></Form>
+
+          <Load source={categories}>{cats => (
+            <ul style={{ marginTop: '15px', padding: 0, listStyle: 'none' }}>
+              {cats.map(cat => (
+                <li key={cat._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #eee' }}>
+                  {editingCategory === cat._id ? (
+                    <Form label="Lưu" onSave={async body => {
+                      await api('/admin/categories/' + cat._id, { method: 'PATCH', body });
+                      setEditingCategory(null);
+                      categories.reload();
+                    }}><input name="name" defaultValue={cat.name} required autoFocus /></Form>
+                  ) : (
+                    <>
+                      <span>{cat.name}</span>
+                      <div className="toolbar">
+                        <button className="secondary" onClick={() => setEditingCategory(cat._id)}>Sửa</button>
+                        <Action secondary path={'/admin/categories/' + cat._id} method="DELETE" onDone={categories.reload}>Xóa</Action>
+                      </div>
+                    </>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}</Load>
         </details>
       </div>
       {editing && <div className="card card-body">
