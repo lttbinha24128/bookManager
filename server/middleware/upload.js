@@ -1,6 +1,6 @@
 const multer = require('multer');
 const { randomUUID } = require('node:crypto');
-const { writeFile, unlink } = require('node:fs/promises');
+const { writeFile, unlink, mkdir  } = require('node:fs/promises');
 const path = require('node:path');
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024, files: 1, fields: 20 } }).single('image');
@@ -15,6 +15,7 @@ async function saveImage(file) {
   if (data.toString('ascii', 0, 4) === 'RIFF' && data.toString('ascii', 8, 12) === 'WEBP') extension = 'webp';
   if (!extension) throw Object.assign(new Error('Chỉ nhận ảnh PNG, JPG hoặc WebP.'), { status: 400 });
   const name = randomUUID() + '.' + extension;
+  await mkdir(path.join(__dirname, '../uploads'), { recursive: true }); 
   await writeFile(path.join(__dirname, '../uploads', name), data, { flag: 'wx' });
   return '/uploads/' + name;
 }

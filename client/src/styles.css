@@ -159,3 +159,56 @@ tr:last-child td { border-bottom: 0; }
   .fields, .filters { grid-template-columns: 1fr; }
   .account { margin-left: 0; }
 }
+
+.table-scroll {
+  max-height: 480px; 
+  overflow: auto; 
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.table-scroll .table-wrap {
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+  width: 100%; 
+}
+
+.table-scroll table {
+  width: 100%;
+  min-width: 100%; 
+}
+
+.table-scroll th {
+  position: sticky;
+  top: -1px; 
+  z-index: 10;
+  background-color: var(--tint);
+  box-shadow: 0 1px 0 var(--line);
+}
+
+.table-scroll .toolbar {
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 9999;
+  animation: slideIn 0.3s ease-out forwards;
+}
+.toast.error { background-color: var(--danger); }
+.toast.success { background-color: var(--green); }
+
+@keyframes slideIn {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

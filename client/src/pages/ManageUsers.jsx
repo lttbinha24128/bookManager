@@ -4,35 +4,82 @@ import { Action, Load, Status, Table, useData } from '../components/shared';
 
 function UserDetail({ userId, onClose }) {
   const source = useData('/admin/users/' + userId); 
+  const [rentalSearch, setRentalSearch] = useState('');
+  const [saleSearch, setSaleSearch] = useState('');
+  const [postSearch, setPostSearch] = useState('');
   
-  return <div className="card card-body" style={{ marginBottom: '20px', backgroundColor: '#f9f9f9' }}>
+    return <div className="card card-body" style={{ marginBottom: '20px' }}>
     <div className="spread">
-      <h2>Chi tiết người dùng</h2>
+      <h3>Chi tiết người dùng</h3>
       <button className="secondary" onClick={onClose}>Đóng</button>
     </div>
     <Load source={source}>
-      {data => <div>
-        <p><strong>Tài khoản:</strong> {data.user.username} - <strong>Họ tên:</strong> {data.user.fullName}</p>
-        
-        <h3>Lịch sử mượn sách ({data.rentals.length})</h3>
-        {data.rentals.length === 0 ? <p>Chưa mượn sách nào.</p> : 
-          <Table headings={['Tên sách', 'Hạn trả', 'Tổng phí', 'Trạng thái']} rows={data.rentals.map(r => [
-            r._id, r.book?.title || 'Sách đã xóa', dateLabel(r.dueDate), money(r.totalFee), <Status value={r.status} />
-          ])} />
-        }
+      {data => {
+        const filteredRentals = data.rentals.filter(r => 
+          (r.book?.title && r.book.title.toLowerCase().includes(rentalSearch.toLowerCase()))
+        );
+        const filteredSales = data.sales.filter(s => 
+          (s.title && s.title.toLowerCase().includes(saleSearch.toLowerCase()))
+        );
+        const filteredPosts = data.posts.filter(p => 
+          (p.title && p.title.toLowerCase().includes(postSearch.toLowerCase()))
+        );
 
-        <h3>Lịch sử bán sách ({data.sales.length})</h3>
-        {data.sales.length === 0 ? <p>Chưa bán sách nào.</p> : 
-          <Table headings={['Tên sách', 'Giá mong muốn', 'Trạng thái']} rows={data.sales.map(s => [
-            s._id, s.title, money(s.expectedPrice), <Status value={s.status} />
-          ])} />
-        }
-        
-        <h3>Bài đăng diễn đàn ({data.posts.length})</h3>
-        {data.posts.length === 0 ? <p>Chưa có bài đăng nào.</p> : 
-          <ul>{data.posts.map(p => <li key={p._id}>{p.title} (Trạng thái: {p.status})</li>)}</ul>
-        }
-      </div>}
+        return <div>
+          <p><strong>Tài khoản:</strong> {data.user.username} - <strong>Họ tên:</strong> {data.user.fullName}</p>
+          
+          {/* --- PHẦN MƯỢN SÁCH --- */}
+          <div className="spread" style={{ marginTop: '20px', marginBottom: '10px' }}>
+            <h3 style={{ margin: 0 }}>Lịch sử mượn sách ({filteredRentals.length})</h3>
+            <input 
+              type="search" placeholder="Tìm tên sách..." 
+              value={rentalSearch} onChange={e => setRentalSearch(e.target.value)} 
+              style={{ width: '250px', padding: '0.4rem' }} 
+            />
+          </div>
+          <div className="table-scroll" style={{ maxHeight: '280px' }}>
+            {filteredRentals.length === 0 ? <p style={{ padding: '10px' }}>Không tìm thấy dữ liệu.</p> : 
+              <Table headings={['Tên sách', 'Hạn trả', 'Tổng phí', 'Trạng thái']} rows={filteredRentals.map(r => [
+                r._id, r.book?.title || 'Sách đã xóa', dateLabel(r.dueDate), money(r.totalFee), <Status value={r.status} />
+              ])} />
+            }
+          </div>
+
+          {/* --- PHẦN BÁN SÁCH --- */}
+          <div className="spread" style={{ marginTop: '20px', marginBottom: '10px' }}>
+            <h3 style={{ margin: 0 }}>Lịch sử bán sách ({filteredSales.length})</h3>
+            <input 
+              type="search" placeholder="Tìm tên sách..." 
+              value={saleSearch} onChange={e => setSaleSearch(e.target.value)} 
+              style={{ width: '250px', padding: '0.4rem' }} 
+            />
+          </div>
+          <div className="table-scroll" style={{ maxHeight: '280px' }}>
+            {filteredSales.length === 0 ? <p style={{ padding: '10px' }}>Không tìm thấy dữ liệu.</p> : 
+              <Table headings={['Tên sách', 'Giá mong muốn', 'Trạng thái']} rows={filteredSales.map(s => [
+                s._id, s.title, money(s.expectedPrice), <Status value={s.status} />
+              ])} />
+            }
+          </div>
+          
+          {/* --- PHẦN BÀI ĐĂNG --- */}
+          <div className="spread" style={{ marginTop: '20px', marginBottom: '10px' }}>
+            <h3 style={{ margin: 0 }}>Bài đăng diễn đàn ({filteredPosts.length})</h3>
+            <input 
+              type="search" placeholder="Tìm tiêu đề bài đăng..." 
+              value={postSearch} onChange={e => setPostSearch(e.target.value)} 
+              style={{ width: '250px', padding: '0.4rem' }} 
+            />
+          </div>
+          <div style={{ maxHeight: '200px', overflowY: 'auto', border: '1px solid var(--line)', borderRadius: '8px', background: 'var(--surface)', padding: '10px 10px 10px 30px' }}>
+            {filteredPosts.length === 0 ? <p>Không tìm thấy dữ liệu.</p> : 
+              <ul style={{ margin: 0 }}>
+                {filteredPosts.map(p => <li key={p._id} style={{ marginBottom: '5px' }}>{p.title} (Trạng thái: {p.status})</li>)}
+              </ul>
+            }
+          </div>
+        </div>;
+      }}
     </Load>
   </div>;
 }
@@ -40,18 +87,42 @@ function UserDetail({ userId, onClose }) {
 export function ManageUsers() {
   const source = useData('/admin/users');
   const [selectedUserId, setSelectedUserId] = useState(null);
+  const [search, setSearch] = useState(''); 
   
   return <><h1>Người dùng</h1>
     
     {selectedUserId && <UserDetail userId={selectedUserId} onClose={() => setSelectedUserId(null)} />}
     
-    <Load source={source}>{data => <Table headings={['Tài khoản', 'Họ tên', 'Email', 'Vai trò', 'Trạng thái', 'Thao tác']} rows={data.map(user => [user._id,
-      user.username, user.fullName, user.email, user.role === 'admin' ? 'Thủ thư' : 'Bạn đọc', <Status value={user.status} label={user.status === 'active' ? 'Hoạt động' : undefined} />,
-      
-      <div className="toolbar">
-        <button className="secondary" onClick={() => setSelectedUserId(user._id)}>Chi tiết</button>
-        {user.role === 'user' && <Action secondary path={'/admin/users/' + user._id} body={{ status: user.status === 'locked' ? 'active' : 'locked' }} onDone={source.reload}>{user.status === 'locked' ? 'Mở khóa' : 'Khóa'}</Action>}
-      </div>,
-      
-    ])} />}</Load></>;
+    <Load source={source}>
+      {data => {
+        const filteredData = data.filter(u => 
+          u.username.toLowerCase().includes(search.toLowerCase()) || 
+          (u.fullName && u.fullName.toLowerCase().includes(search.toLowerCase())) ||
+          (u.email && u.email.toLowerCase().includes(search.toLowerCase()))
+        );
+
+        return <>
+          <div className="spread" style={{ marginBottom: '1rem' }}>
+            <span></span> 
+            <input 
+              type="search" placeholder="Tìm tài khoản, họ tên, email..." 
+              value={search} onChange={e => setSearch(e.target.value)} 
+              style={{ width: '300px' }} 
+            />
+          </div>
+
+          <div className="table-scroll" style={{ maxHeight: '800px' }}>
+            <Table headings={['Tài khoản', 'Họ tên', 'Email', 'Vai trò', 'Trạng thái', 'Thao tác']} rows={filteredData.map(user => [user._id,
+              user.username, user.fullName, user.email, user.role === 'admin' ? 'Thủ thư' : 'Bạn đọc', <Status value={user.status} label={user.status === 'active' ? 'Hoạt động' : undefined} />,
+              
+              <div className="toolbar">
+                <button className="secondary" onClick={() => setSelectedUserId(user._id)}>Chi tiết</button>
+                {user.role === 'user' && <Action secondary path={'/admin/users/' + user._id} body={{ status: user.status === 'locked' ? 'active' : 'locked' }} onDone={source.reload}>{user.status === 'locked' ? 'Mở khóa' : 'Khóa'}</Action>}
+              </div>,
+            ])} />
+          </div>
+        </>;
+      }}
+    </Load>
+  </>;
 }

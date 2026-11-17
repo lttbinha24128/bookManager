@@ -64,6 +64,16 @@ async function categoryExists(id) {
 
 async function saveBook(req, res) {
   const { title, author, category, volumeNumber, dailyRate, description } = req.body;
+  if (!title || !title.trim()) throw fail(400, 'Tên sách không được để trống.');
+  if (!author || !author.trim()) throw fail(400, 'Tên tác giả không được để trống.');
+  
+  const rate = Number(dailyRate);
+  if (isNaN(rate) || rate < 0) throw fail(400, 'Giá thuê không hợp lệ. Có thể nhập 0 nếu miễn phí.');
+  
+  if (req.body.quantity !== undefined && req.body.quantity !== '') {
+    const qty = Number(req.body.quantity);
+    if (isNaN(qty) || qty < 0 || !Number.isInteger(qty)) throw fail(400, 'Số lượng tồn kho phải là số nguyên không âm.');
+  }
   await categoryExists(category);
   const book = req.params.id ? await Book.findById(req.params.id).select('+stockOperations') : new Book();
   if (!book) throw fail(404, 'Không tìm thấy sách.');
@@ -87,6 +97,12 @@ async function setVisibility(req, res) {
 
 async function submitSale(req, res) {
   const { title, author, category, volumeNumber, description, expectedPrice } = req.body;
+  if (!title || !title.trim()) throw fail(400, 'Tên sách không được để trống.');
+  if (!author || !author.trim()) throw fail(400, 'Tên tác giả không được để trống.');
+  if (!description || !description.trim()) throw fail(400, 'Vui lòng nhập tình trạng sách.');
+
+  const price = Number(expectedPrice);
+  if (isNaN(price) || price < 0) throw fail(400, 'Giá mong muốn không hợp lệ. Hãy nhập số (có thể nhập 0 nếu muốn tặng).');
   await categoryExists(category);
   const sale = await withImage(req.file, image => SellRequest.create({
     user: req.user._id, title, author, category, volumeNumber: volumeNumber || null, description, expectedPrice, image,
