@@ -108,12 +108,16 @@ export function BookFields({ categories, book = {}, sale = false }) {
       <label>Thể loại<select name="category" required defaultValue={book.category?._id || ''}>
         <option value="">Chọn thể loại</option>{categories.map(category => <option key={category._id} value={category._id}>{category.name}</option>)}
       </select></label>
-      <label>Số tập (nếu có)<input type="number" name="volumeNumber" min="1" defaultValue={book.volumeNumber ?? ''} /></label>
+      {/* Thêm step="1" ở đây */}
+      <label>Số tập (nếu có)<input type="number" name="volumeNumber" min="1" step="1" defaultValue={book.volumeNumber ?? ''} /></label>
     </div>
-    {sale ? <label>Giá mong muốn (đ)<input type="number" name="expectedPrice" min="0" required /></label> :
+    {sale ? 
+      <label>Giá mong muốn (đ)<input type="number" name="expectedPrice" min="0" step="1" required /></label> :
       <div className="fields">
-        <label>Tồn kho{book._id && ' mới (nếu cần chỉnh)'}<input type="number" name="quantity" min="0" required={!book._id} placeholder={book._id ? String(book.quantity) : undefined} /></label>
-        <label>Giá thuê/ngày (đ)<input type="number" name="dailyRate" min="0" defaultValue={book.dailyRate ?? 0} required /></label>
+        {/* Thêm step="1" ở đây */}
+        <label>Tồn kho{book._id && ' mới (nếu cần chỉnh)'}<input type="number" name="quantity" min="0" step="1" required={!book._id} placeholder={book._id ? String(book.quantity) : undefined} /></label>
+        {/* Thêm step="1" ở đây */}
+        <label>Giá thuê/ngày (đ)<input type="number" name="dailyRate" min="0" step="1" defaultValue={book.dailyRate ?? 0} required /></label>
       </div>}
     <label>{sale ? 'Tình trạng sách' : 'Mô tả'}<textarea name="description" required={sale} defaultValue={book.description} maxLength="3000" /></label>
     <label>{sale ? 'Ảnh tình trạng sách' : 'Ảnh bìa'}<input name="image" type="file" accept="image/jpeg,image/png,image/webp" required={sale} /></label>
