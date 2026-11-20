@@ -1,0 +1,242 @@
+/* =========================================
+   CHI TIẾT SÁCH (BOOK DETAIL)
+   ========================================= */
+
+/* 1. Khung bao ngoài */
+.book-detail-page {
+    max-width: 900px;
+    margin: 2rem auto;
+  }
+  
+  /* 2. Nút quay lại */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--muted);
+    font-weight: 600;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+    transition: color 0.2s;
+  }
+  .back-link:hover {
+    color: var(--green);
+  }
+  
+  /* 3. Khung chứa toàn bộ thông tin sách */
+  .book-detail-card {
+    display: grid;
+    grid-template-columns: 280px 1fr; /* Cột trái 280px, cột phải tự động */
+    gap: 3rem; /* Khoảng cách giữa ảnh và nội dung */
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* 4. Phần Ảnh bìa (Cover) */
+  .book-cover-wrapper {
+    width: 100%;
+  }
+  .book-detail-card .cover {
+    width: 100%;
+    height: auto;
+    min-height: 350px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Đổ bóng đậm hơn cho ảnh bìa */
+    border: 1px solid var(--line);
+  }
+  
+  /* Placeholder nếu không có ảnh */
+  .book-detail-card .placeholder {
+    height: 350px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--sand) 0%, #e8e0d5 100%);
+  }
+  
+  /* 5. Phần Nội dung (Bên phải) */
+/* Tiêu đề sách: To hơn một chút nhưng vẫn có điểm nhấn */
+.book-info h1 {
+    font-family: "Source Sans 3", "Segoe UI", sans-serif !important;
+    font-size: clamp(2rem, 3.5vw, 2.6rem); /* Tăng kích thước lên */
+    font-weight: 800;
+    color: var(--green-dark); 
+    line-height: 1.3;
+    margin-top: 0.5rem;
+    margin-bottom: 0.8rem; /* Tăng khoảng cách dưới một chút */
+    position: relative; 
+    display: inline-block; 
+    padding-bottom: 0.6rem;
+  }
+  
+  /* Gạch chân màu xanh dưới tiêu đề */
+  .book-info h1::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60px; /* Gạch chân dài hơn một chút */
+    height: 3px;
+    background: var(--green);
+    border-radius: 2px;
+  }
+  
+
+  
+/* Tên tác giả: Làm đậm và to hơn chút */
+.book-author-name {
+    font-size: 1.05rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    font-weight: 600; /* Làm đậm chữ "Tác giả: ..." */
+  }
+  
+  /* Mô tả */
+  .book-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--ink);
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px dashed var(--line);
+  }
+  
+  /* 6. Trạng thái & Giá */
+  .book-stats {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .price-badge {
+    background: var(--tint);
+    color: var(--green-dark);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  .stock-info {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  
+ /* =========================================
+   FORM MƯỢN SÁCH (THU GỌN TỐI ĐA)
+   ========================================= */
+
+/* Form mượn sách (Kéo dài bằng khối trên) */
+.borrow-form {
+    background: var(--paper);
+    padding: 1.5rem; /* Tăng lại padding một chút cho cân đối với khối trên */
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    /* max-width: 400px;  <-- XÓA DÒNG NÀY ĐI */
+    width: 100%; /* Đảm bảo nó rộng 100% */
+  }
+  
+  .borrow-form h3 {
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+    color: var(--ink);
+  }
+  
+  /* Ghi đè lại class .form bên trong để không bị khoảng trống lớn */
+  .borrow-form .form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem; /* Khoảng cách giữa các phần tử là 0.8rem */
+    margin: 0; /* Xóa margin mặc định của Form */
+  }
+  
+  .borrow-form label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0;
+    color: var(--ink);
+  }
+  
+  .borrow-form input[type="date"] {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    margin-bottom: 0; /* Xóa margin dưới */
+  }
+  
+  /* Ghi đè nút submit của Form */
+  .borrow-form button[type="submit"] {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    margin-top: 0.5rem; /* Chỉ cách ô nhập ngày một khoảng nhỏ */
+  }
+  
+  /* Chỉnh lại dòng ghi chú nhỏ */
+  .borrow-form small {
+    display: block;
+    text-align: center;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  /* Xóa khoảng trống của thẻ p rỗng bên trong Form */
+.borrow-form p:empty {
+    display: none;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .book-detail-card {
+      grid-template-columns: 1fr; /* Xếp dọc trên mobile */
+      padding: 1.5rem;
+      gap: 2rem;
+    }
+    .book-detail-card .cover, 
+    .book-detail-card .placeholder {
+      height: 300px;
+    }
+  }
+
+  /* Khối thông tin chi tiết (Metadata) */
+.book-metadata {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Chia làm 2 cột nhỏ */
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+  
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  
+  .meta-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  
+  .meta-value {
+    font-weight: 600;
+    color: var(--ink);
+  }

@@ -1,0 +1,180 @@
+/* =========================================
+   TRANG DANH MỤC SÁCH
+   ========================================= */
+
+/* 1. Phần Tiêu đề & Nút "Bán sách" */
+/* 1. Khung chứa toàn bộ phần tiêu đề */
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end; /* Căn thẳng hàng dưới cùng */
+  margin-bottom: 2.5rem; /* Tạo khoảng cách với thanh tìm kiếm */
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--line); /* Đường kẻ ngang phân cách */
+  flex-wrap: wrap; /* Tự động xuống dòng trên mobile */
+  gap: 1rem;
+}
+
+  
+.page-heading h1 {
+  font-family: "Source Sans 3", "Segoe UI", sans-serif !important; /* Ép font hiện đại */
+  font-size: clamp(2rem, 4vw, 2.8rem); /* Kích thước linh hoạt */
+  font-weight: 800; /* Đậm */
+  color: var(--ink);
+  margin: 0;
+  position: relative;
+  padding-left: 1.2rem; /* Chừa chỗ cho thanh dọc */
+  line-height: 1.2;
+}
+/* Thanh dọc điểm nhấn màu xanh bên trái tiêu đề */
+.page-heading h1::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 15%;
+  height: 70%;
+  width: 6px;
+  background: var(--green);
+  border-radius: 4px;
+}
+  
+/* 3. Nút "Bán sách cho thư viện" */
+.page-heading .button,
+.page-heading a.button {
+  background: var(--green);
+  color: #ffffff !important;
+  border: 1px solid var(--green);
+  padding: 0.7rem 1.5rem; /* Nút to hơn, dễ bấm hơn */
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(49, 86, 71, 0.2); /* Đổ bóng nhẹ cho nút */
+}
+  
+/* Hiệu ứng hover cho nút */
+.page-heading .button:hover {
+  background: var(--green-dark);
+  border-color: var(--green-dark);
+  transform: translateY(-2px); /* Nhảy lên nhẹ */
+  box-shadow: 0 6px 15px rgba(49, 86, 71, 0.3);
+}
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 768px) {
+  .page-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .page-heading h1 {
+    font-size: 2rem;
+  }
+  .page-heading .button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+  
+  /* 2. Thanh Tìm kiếm & Bộ lọc (Filters) */
+  .filters {
+    display: grid;
+    /* Chia lại tỷ lệ: Ô tìm kiếm rộng hơn 2 ô kia một chút */
+    grid-template-columns: 2fr 1fr 1fr; 
+    gap: 1.5rem; /* Tăng khoảng cách giữa các ô */
+    background: var(--surface);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03); /* Đổ bóng nhẹ cho nổi bật */
+    margin-bottom: 2rem;
+  }
+  
+  /* Style cho các ô input/select */
+  .filters label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  /* Style cho thẻ select */
+.filters select {
+    width: 100%;
+    padding: 0.75rem 2.5rem 0.75rem 1rem; /* Chừa khoảng trống bên phải cho icon mũi tên */
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background-color: var(--paper);
+    color: var(--ink);
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+    outline: none;
+    
+    /* Ẩn mũi tên mặc định của trình duyệt */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    
+    /* Thêm icon mũi tên tự custom (dùng SVG) */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234f6056%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 0.8rem;
+  }
+  
+  .filters select:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px var(--tint);
+  }
+  
+  /* Cố gắng style cho các option bên trong (chỉ hoạt động tốt trên Firefox) */
+  .filters select option {
+    background: var(--surface);
+    color: var(--ink);
+    padding: 10px;
+  }
+  
+  .filters input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  
+  .filters input:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px var(--tint); /* Viền sáng khi click vào */
+  }
+  
+  /* 3. Trạng thái trống (Empty State) */
+  .empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--surface);
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+    color: var(--muted);
+    font-size: 1.1rem;
+  }
+  
+  /* Responsive cho màn hình nhỏ */
+  @media (max-width: 768px) {
+    .filters {
+      grid-template-columns: 1fr; /* Mobile xếp chồng dọc */
+    }
+    .page-heading {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }

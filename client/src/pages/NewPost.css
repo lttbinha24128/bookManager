@@ -1,0 +1,152 @@
+/* =========================================
+   TRANG ĐĂNG BÀI DIỄN ĐÀN (NEW POST)
+   ========================================= */
+
+/* 1. Khung chứa toàn bộ trang (Căn giữa) */
+.newpost-page {
+    max-width: 700px;
+    margin: 2rem auto; 
+    padding: 2.5rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); 
+  }
+  
+/* 2. Tiêu đề trang (Nổi bật) */
+.newpost-page h1 {
+    font-family: "Source Sans 3", "Segoe UI", sans-serif !important;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+    text-align: center;
+    position: relative; 
+    padding-bottom: 1rem; 
+  }
+  
+/* Thanh gạch chân màu xanh ở giữa */
+.newpost-page h1::before {
+    content: '';
+    position: absolute;
+    left: 50%; 
+    bottom: 0;
+    transform: translateX(-50%); 
+    width: 60px; 
+    height: 4px;
+    background: var(--green); 
+    border-radius: 4px;
+  }
+  
+/* Phụ đề (Subtitle) */
+.newpost-page p.subtitle {
+    text-align: center;
+    color: var(--muted);
+    margin-bottom: 2.5rem; 
+    font-size: 1rem;
+  }
+  
+  /* 3. Form nhập liệu */
+  .newpost-page .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem; 
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  /* Label (Nhãn) */
+  .newpost-page label {
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 0.95rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  /* Ô input và textarea */
+  .newpost-page input,
+  .newpost-page select,
+  .newpost-page textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+  }
+  
+  /* Hiệu ứng khi click vào ô */
+  .newpost-page input:focus,
+  .newpost-page select:focus,
+  .newpost-page textarea:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px var(--tint);
+    outline: none;
+  }
+  
+  /* Ô nhập ảnh */
+  .newpost-page input[type="file"] {
+    padding: 0.6rem;
+    background: var(--tint);
+    border: 1px dashed var(--green);
+    cursor: pointer;
+  }
+  .newpost-page input[type="file"]::file-selector-button {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    margin-right: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--green-dark);
+    transition: all 0.2s;
+  }
+  .newpost-page input[type="file"]::file-selector-button:hover {
+    background: var(--green);
+    color: white;
+  }
+  
+  /* 4. Nút Gửi */
+  .newpost-page button[type="submit"] {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .newpost-page button[type="submit"]:hover {
+    background: var(--green-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(49, 86, 71, 0.3);
+  }
+  
+  /* 5. Chỉnh lại 2 cột (Nếu có) */
+  .newpost-page .fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  
+  @media (max-width: 600px) {
+    .newpost-page {
+      padding: 1.5rem;
+      margin: 1rem;
+    }
+    .newpost-page .fields {
+      grid-template-columns: 1fr; 
+    }
+  }

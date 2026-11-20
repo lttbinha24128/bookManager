@@ -82,22 +82,61 @@ export function Status({ value, label }) {
 }
 
 export function Cover({ book }) {
-  return book.image
-    ? <img className="cover" src={book.image} alt={'Bìa ' + book.title} />
-    : <div className="cover placeholder"><span aria-hidden="true">▤</span><strong>{book.title}</strong><small>{book.author}</small></div>;
+  // Nếu có ảnh thật (book.image), hiển thị ảnh
+  if (book.image) {
+    return <img className="cover" src={book.image} alt={'Bìa ' + book.title} />;
+  }
+  
+  // Nếu không có ảnh, hiển thị Placeholder được thiết kế lại
+  return (
+    <div className="cover placeholder">
+      <span style={{ fontSize: '3rem', opacity: 0.2, marginBottom: '0.5rem' }}>📖</span>
+      <strong style={{ fontSize: '1rem', textAlign: 'center', padding: '0 1rem', color: 'var(--ink)' }}>
+        {book.title}
+      </strong>
+      <small style={{ color: 'var(--muted)', marginTop: '0.5rem' }}>{book.author}</small>
+    </div>
+  );
 }
 
 export function BookGrid({ books }) {
   if (!books.length) return <p className="empty">Chưa tìm thấy sách phù hợp.</p>;
-  return <div className="book-grid">{books.map(book => <Link className="book-card card" key={book._id} to={'/books/' + book._id}>
-    <Cover book={book} />
-    <div className="card-body">
-      <small>{book.category?.name}</small>
-      <h3>{book.title}{book.volumeNumber ? ' · Tập ' + book.volumeNumber : ''}</h3>
-      <p>{book.author}</p>
-      <div className="spread"><span className="badge">{book.dailyRate ? money(book.dailyRate) + '/ngày' : 'Miễn phí'}</span><small>{book.quantity ? 'Còn ' + book.quantity : 'Hết sách'}</small></div>
+  
+  return (
+    <div className="book-grid">
+      {books.map(book => (
+        <Link className="book-card card" key={book._id} to={'/books/' + book._id}>
+          <Cover book={book} />
+          
+          <div className="card-body">
+            {/* Thể loại */}
+            <small className="book-category">{book.category?.name || 'Chưa phân loại'}</small>
+            
+            {/* Tên sách (giới hạn 2 dòng) */}
+            <h3>{book.title}{book.volumeNumber ? ` · Tập ${book.volumeNumber}` : ''}</h3>
+            
+            {/* Tác giả */}
+            <p className="book-author">{book.author}</p>
+            
+            {/* Phần giá và số lượng */}
+            <div className="spread book-meta">
+              <span className="badge">
+                {book.dailyRate ? `${money(book.dailyRate)}/ngày` : 'Miễn phí'}
+              </span>
+              <small className={book.quantity ? 'text-success' : 'text-danger'}>
+                {book.quantity ? `Còn ${book.quantity}` : 'Hết sách'}
+              </small>
+            </div>
+            
+            {/* Nút Xem chi tiết (sẽ bị ẩn, chỉ hiện khi hover vào thẻ) */}
+            <div className="book-action">
+              <span>Xem chi tiết →</span>
+            </div>
+          </div>
+        </Link>
+      ))}
     </div>
-  </Link>)}</div>;
+  );
 }
 
 export function BookFields({ categories, book = {}, sale = false }) {

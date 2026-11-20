@@ -46,17 +46,74 @@ function Layout() {
   return <>
     <a className="skip-link" href="#main">Đến nội dung chính</a>
     <header><div className="nav container">
-      <Link className="brand" to="/"><span aria-hidden="true">▤</span> BookManager</Link>
-      <nav aria-label="Điều hướng chính">
-        <NavLink end to="/">Trang chủ</NavLink><NavLink to="/books">Sách</NavLink><NavLink to="/forum">Diễn đàn</NavLink>
-      </nav>
-      <div className="account">
-        {user ? <>{user.role === 'admin' && <Link to="/admin">Quản trị</Link>}<Link to="/profile">Hồ sơ</Link><button className="secondary" onClick={logout}>Đăng xuất</button></>
-          : <><Link to="/login">Đăng nhập</Link><Link className="button secondary" to="/register">Đăng ký</Link></>}
-      </div>
-    </div></header>
+  {/* Gom Logo và Menu về bên trái */}
+  <div className="nav-left">
+    <Link className="brand" to="/"><span aria-hidden="true">▤</span> BookManager</Link>
+    <nav aria-label="Điều hướng chính">
+      <NavLink end to="/">Trang chủ</NavLink>
+      <NavLink to="/books">Sách</NavLink>
+      <NavLink to="/forum">Diễn đàn</NavLink>
+    </nav>
+  </div>
+
+  {/* Tài khoản nằm bên phải */}
+  <div className="account">
+    {user ? (
+      <>
+        {user.role === 'admin' && <Link to="/admin">Quản trị</Link>}
+        <Link to="/profile">Hồ sơ</Link>
+        <button className="secondary" onClick={logout}>Đăng xuất</button>
+      </>
+    ) : (
+      <>
+        <Link to="/login" className="login-link">Đăng nhập</Link>
+        <Link className="button" to="/register">Đăng ký</Link>
+      </>
+    )}
+  </div>
+</div></header>
     <main id="main" className="container"><Outlet /></main>
-    <footer><div className="container"><strong>BookManager</strong><Link to="/books">Danh mục sách</Link><Link to="/forum">Diễn đàn</Link></div></footer>
+    <footer>
+  <div className="container footer-grid">
+    {/* Cột 1: Giới thiệu */}
+    <div className="footer-col brand-col">
+      <Link className="brand" to="/"><span aria-hidden="true">▤</span> BookManager</Link>
+      <p className="muted">Nền tảng quản lý và trao đổi sách dành cho cộng đồng yêu sách. Mượn, thuê, mua bán và thảo luận cùng nhau.</p>
+    </div>
+
+    {/* Cột 2: Liên kết nhanh */}
+    <div className="footer-col">
+      <h3>Khám phá</h3>
+      <Link to="/books">Tất cả sách</Link>
+      <Link to="/forum">Diễn đàn</Link>
+      <Link to="/sell">Đăng bán sách</Link>
+    </div>
+
+    {/* Cột 3: Hỗ trợ */}
+    <div className="footer-col">
+      <h3>Hỗ trợ</h3>
+      <Link to="/profile">Tài khoản của tôi</Link>
+      <a href="#">Chính sách bảo mật</a>
+      <a href="#">Điều khoản sử dụng</a>
+    </div>
+
+    {/* Cột 4: Liên hệ */}
+<div className="footer-col">
+  <h3>Liên hệ</h3>
+  <a href="mailto:support@bookmanager.vn">Email: support@bookmanager.vn</a>
+  <a href="tel:19001234">Hotline: 1900 1234</a>
+  <p>Địa chỉ: 123 Đường Sách, TP. HCM</p> {/* Thêm dòng này */}
+</div>
+  </div>
+  
+  {/* Dòng bản quyền */}
+  <div className="footer-bottom">
+    <div className="container">
+      <span>© {new Date().getFullYear()} BookManager. Bảo lưu mọi quyền.</span>
+      <span></span>
+    </div>
+  </div>
+</footer>
   </>;
 }
 

@@ -1,31 +1,102 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api, dateLabel } from '../services/api';
 import { Action, Form, Load, SignInLink, Status, useAuth, useData } from '../components/shared';
+import './PostDetail.css'; // <-- Nhớ import file CSS
 
 export function PostDetail() {
   const { id } = useParams();
   const source = useData('/posts/' + id);
   const { user } = useAuth();
-  const [comment, setComment] = useState('');
-  return <Load source={source}>{({ post, comments }) => <>
-    <Link to="/forum">← Diễn đàn</Link>
-    <article className="card card-body detail-post">
-      <span className="badge">{post.type === 'sell' ? 'Thanh lý' : 'Trao đổi'}</span>
-      <h1>{post.title}</h1><small>{post.user?.fullName} · {dateLabel(post.createdAt)}</small>
-      <p className="preserve">{post.content}</p>
-      {post.image && <img className="attachment" src={post.image} alt="Ảnh đính kèm bài đăng" />}
-      {post.status === 'closed' && <Status value="closed" />}
-      {post.status === 'approved' && post.user?._id === user?._id && <Action path={'/posts/' + id + '/close'} onDone={source.reload}>Đã hoàn tất giao dịch</Action>}
-    </article>
-    <section className="card card-body"><h2>Bình luận</h2>
-      {!comments.length && <p>Chưa có bình luận.</p>}
-      {comments.map(item => <div className="comment" key={item._id}><strong>{item.user?.fullName}</strong> <small>{dateLabel(item.createdAt)}</small><p className="preserve">{item.content}</p></div>)}
-      {post.status === 'approved' && (user ? <Form label="Gửi bình luận" onSave={async body => {
-        await api('/posts/' + id + '/comments', { method: 'POST', body });
-        setComment('');
-        source.reload();
-      }}><label>Nội dung<textarea name="content" maxLength="1500" required value={comment} onChange={event => setComment(event.target.value)} /></label></Form> : <SignInLink>Đăng nhập để bình luận</SignInLink>)}
-    </section>
-  </>}</Load>;
+
+  return (
+    <Load source={source}>
+      {({ post, comments }) => (
+        <div className="post-detail-page"> {/* Class bao ngoài mới */}
+          
+          <div style={{ marginBottom: '1rem' }}>
+            <Link to="/forum" style={{ color: 'var(--muted)', fontWeight: '600' }}>
+              ← Quay lại diễn đàn
+            </Link>
+          </div>
+
+          {/* KHUNG BÀI VIẾT */}
+          <article className="post-content-card">
+            <div style={{ marginBottom: '1rem' }}>
+              <span className="badge">{post.type === 'sell' ? 'Thanh lý' : 'Trao đổi'}</span>
+              {post.status === 'closed' && <Status value="closed" />}
+            </div>
+            
+            <h1>{post.title}</h1>
+            
+            <div className="post-meta-info">
+              <span>{post.user?.fullName || 'Ẩn danh'}</span>
+              <span>•</span>
+              <span>{dateLabel(post.createdAt)}</span>
+            </div>
+            
+            <div className="post-text preserve">
+              {post.content}
+            </div>
+            
+            {post.image && <img className="post-attachment" src={post.image} alt="Ảnh đính kèm bài đăng" />}
+            
+            {/* Nút hoàn tất giao dịch (Chỉ hiện với chủ bài viết) */}
+            {post.status === 'approved' && post.user?._id === user?._id && (
+              <div style={{ marginTop: '1.5rem', borderTop: '1px dashed var(--line)', paddingTop: '1.5rem' }}>
+                <Action path={'/posts/' + id + '/close'} onDone={source.reload}>
+                  Đã hoàn tất giao dịch
+                </Action>
+              </div>
+            )}
+          </article>
+
+          {/* KHUNG BÌNH LUẬN */}
+          <section className="comments-section">
+            <h2>Bình luận</h2>
+            
+            {!comments.length && <p style={{ color: 'var(--muted)' }}>Chưa có bình luận nào. Hãy là người đầu tiên!</p>}
+            
+            {comments.map(item => (
+              <div className="comment-item" key={item._id}>
+                <div className="comment-author">
+                  {item.user?.fullName || 'Ẩn danh'}
+                  <span className="comment-date">{dateLabel(item.createdAt)}</span>
+                </div>
+                <div className="comment-text preserve">
+                  {item.content}
+                </div>
+              </div>
+            ))}
+
+            {/* Form gửi bình luận */}
+            {post.status === 'approved' && (
+              user ? (
+                <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--line)' }}>
+                  <Form 
+                    label="Gửi bình luận" 
+                    onSave={async body => {
+                      await api('/posts/' + id + '/comments', { method: 'POST', body });
+                      source.reload();
+                      return 'Đã gửi bình luận.';
+                    }}
+                  >
+                    <label>
+                      Nội dung
+                      <textarea name="content" maxLength="1500" required rows="3" placeholder="Viết bình luận của bạn..." />
+                    </label>
+                  </Form>
+                </div>
+              ) : (
+                <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+                  <SignInLink>Đăng nhập để bình luận</SignInLink>
+                </div>
+              )
+            )}
+          </section>
+
+        </div>
+      )}
+    </Load>
+  );
 }

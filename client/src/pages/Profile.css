@@ -1,0 +1,126 @@
+/* =========================================
+   TRANG HỒ SƠ CÁ NHÂN (PROFILE)
+   ========================================= */
+
+/* 1. Tiêu đề trang */
+.profile-page h1 {
+    font-family: "Source Sans 3", "Segoe UI", sans-serif !important; /* Ép font hiện đại */
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-left: 1.2rem;
+    line-height: 1.2;
+  }
+  
+  /* Thanh dọc màu xanh bên trái tiêu đề (Đồng bộ với các trang khác) */
+  .profile-page h1::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 15%;
+    height: 70%;
+    width: 6px;
+    background: var(--green);
+    border-radius: 4px;
+  }
+  
+  /* 2. Khối Thông tin cá nhân (Card) */
+  .profile-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03); /* Đổ bóng nhẹ */
+  }
+  
+  .profile-card h2 {
+    font-family: "Source Sans 3", "Segoe UI", sans-serif !important;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+  
+  /* Phần text thông tin (username, email) */
+  .profile-info-text {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Form cập nhật họ tên */
+  .profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    max-width: 400px; /* Giới hạn độ rộng form cho đẹp */
+  }
+  
+  .profile-form label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--ink);
+  }
+  
+  .profile-form input {
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper);
+    font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+  
+  .profile-form input:focus {
+    border-color: var(--green);
+    outline: none;
+  }
+  
+  /* 3. Thanh Tabs (Phiếu mượn, Đề xuất, Bài đăng) */
+  .profile-tabs {
+    display: flex;
+    gap: 1rem;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    flex-wrap: wrap;
+  }
+  
+  /* Style cho các nút Tab */
+  .profile-tabs button {
+    background: transparent;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+  
+  .profile-tabs button:hover {
+    background: var(--tint);
+    color: var(--green-dark);
+  }
+  
+  /* Trạng thái Tab đang được chọn (Active) */
+  .profile-tabs button.active {
+    background: var(--green);
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(49, 86, 71, 0.2);
+  }
+  
+  /* 4. Khu vực hiển thị dữ liệu (Empty state) */
+  .profile-content-empty {
+    padding: 3rem;
+    text-align: center;
+    background: var(--surface);
+    border: 2px dashed var(--line); /* Viền nét đứt */
+    border-radius: var(--radius);
+    color: var(--muted);
+    font-size: 1rem;
+  }

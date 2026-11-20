@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "server/index.js",
   "scripts": {
+    "dev": "vite",
     "start": "node server/index.js",
     "seed": "node server/seed.js",
     "build": "vite build --config client/vite.config.mjs",

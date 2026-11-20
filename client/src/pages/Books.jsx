@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BookGrid, Load, Notice, useData } from '../components/shared';
+import './Books.css';
+
 
 export function Books() {
   const categories = useData('/categories');
