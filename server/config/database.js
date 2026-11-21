@@ -1,9 +1,8 @@
-
 const mongoose = require('mongoose');
 
 const connectDatabase = async () => {
   try {
-    await mongoose.connect('mongodb://127.0.0.1:27017/book_manager');
+    await mongoose.connect('mongodb://localhost:27017/bookmanager');
 
     console.log('Kết nối MongoDB thành công');
   } catch (err) {
