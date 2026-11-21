@@ -4,15 +4,18 @@ Website thư viện chạy cục bộ bằng React, Express và MongoDB.
 
 ## Chạy demo trên Windows
 
-Mở PowerShell ở thư mục dự án. Khởi động dịch vụ MongoDB và kiểm tra tệp .env ở thư mục gốc có MONGODB_URI=mongodb://127.0.0.1:27017/book_manager.
+Mở PowerShell ở thư mục dự án. Khởi động dịch vụ MongoDB và kiểm tra tệp .env ở thư mục gốc có MONGODB_URI=mongodb+srv://hnminha24124_db_user:123456789z@cluster0.k3zk5iu.mongodb.net/book_manager?retryWrites=true&w=majority
+PORT=3000
 
 ```powershell
 npm.cmd install
 npm.cmd run seed
+node server/upload-to-atlas.js
 npm.cmd run build
-npm.cmd start
+npm.cmd run dev:server
+npm.cmd run dev:client
 ```
-
+Mở http://127.0.0.1:5173
 Mở http://127.0.0.1:3000. Chạy seed lần nữa giữ nguyên số lượng tồn và giá đã chỉnh.
 
 | Vai trò | Tên đăng nhập | Mật khẩu demo |
