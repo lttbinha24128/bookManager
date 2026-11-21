@@ -12,7 +12,9 @@ const imageSchema = new mongoose.Schema({
   data: { type: Buffer, required: true },
   uploadedAt: { type: Date, default: Date.now }
 });
-const Image = mongoose.model('Image', imageSchema);
+
+// SỬA LỖI 1: Tránh lỗi "OverwriteModelError" nếu script vô tình chạy 2 lần
+const Image = mongoose.models.Image || mongoose.model('Image', imageSchema);
 
 async function uploadImages() {
   console.log('⏳ Đang kết nối Database...');
@@ -26,8 +28,12 @@ async function uploadImages() {
   const posts = await Post.find({ image: { $ne: null } });
 
   const neededFiles = new Set();
-  books.forEach(b => neededFiles.add(b.image));
-  posts.forEach(p => neededFiles.add(p.image));
+  
+  // SỬA LỖI 2: Dùng path.basename để chỉ lấy TÊN FILE. 
+  // (Lỡ trong Database đang lưu '/uploads/abc.jpg' thì nó sẽ cắt thành 'abc.jpg' để tìm cho đúng)
+  // SỬA LỖI 3: Thêm if (b.image) để tránh lỗi nếu trong DB có trường image bị rỗng ('')
+  books.forEach(b => { if (b.image) neededFiles.add(path.basename(b.image)); });
+  posts.forEach(p => { if (p.image) neededFiles.add(path.basename(p.image)); });
 
   console.log(`Cần upload ${neededFiles.size} file ảnh lên Atlas...`);
 
