@@ -1,0 +1,256 @@
+/* =========================================
+   ADMIN DASHBOARD (THIẾT KẾ MỚI)
+   ========================================= */
+
+   .admin-dashboard {
+    animation: fadeIn 0.4s ease-in-out;
+  }
+  
+  .dashboard-header {
+    background: var(--surface); /* Thêm nền trắng để tạo khối */
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem 2rem; /* Tăng padding cho thoáng */
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02); /* Đổ bóng nhẹ */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .dashboard-header h1 {
+    font-family: "Source Sans 3", "Segoe UI", sans-serif !important;
+    font-size: 2rem; /* Giảm nhẹ kích thước cho cân đối */
+    font-weight: 800;
+    color: var(--ink);
+    margin: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem; /* Tạo khoảng cách giữa thanh dọc và chữ */
+  }
+  
+/* Thanh dọc màu xanh (Dùng thẻ giả ::before thay vì absolute để không bị dính) */
+.dashboard-header h1::before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 28px; /* Chiều cao cố định bằng chiều cao chữ */
+    background: var(--green);
+    border-radius: 4px;
+  }
+  
+  .dashboard-header .text-muted {
+    font-size: 1rem;
+    color: var(--muted);
+    margin: 0;
+    padding-left: 1.4rem; /* Thụt lề để thẳng hàng với chữ Tổng quan */
+  }
+  
+  /* Lưới Metrics (Tự động chia cột) */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  /* Thẻ Metric cơ bản */
+  .metric-card {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  }
+  
+  .metric-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.08);
+    border-color: transparent;
+  }
+  
+  /* Khối Icon */
+  .metric-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    font-size: 1.8rem;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+  
+  .metric-card:hover .metric-icon {
+    transform: scale(1.1) rotate(5deg); /* Hiệu ứng icon nhảy nhẹ */
+  }
+  
+  /* Nội dung chữ */
+  .metric-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .metric-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 0.2rem;
+    line-height: 1.3;
+  }
+  
+  .metric-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1;
+  }
+  
+  /* =========================================
+     MÀU SẮC RIÊNG CHO TỪNG THẺ (Dựa vào class)
+     ========================================= */
+  
+  /* Xanh dương (Người dùng) */
+  .metric-blue .metric-icon { background: #e0f2fe; color: #0284c7; }
+  .metric-blue .metric-value { color: #0284c7; }
+  
+  /* Xanh lá (Đầu sách) */
+  .metric-green .metric-icon { background: #dcfce7; color: #16a34a; }
+  .metric-green .metric-value { color: #16a34a; }
+  
+  /* Cam (Tồn kho) */
+  .metric-orange .metric-icon { background: #ffedd5; color: #ea580c; }
+  .metric-orange .metric-value { color: #ea580c; }
+  
+  /* Vàng (Chờ giao) */
+  .metric-yellow .metric-icon { background: #fef9c3; color: #ca8a04; }
+  .metric-yellow .metric-value { color: #ca8a04; }
+  
+  /* Đỏ (Quá hạn) */
+  .metric-red .metric-icon { background: #fee2e2; color: #dc2626; }
+  .metric-red .metric-value { color: #dc2626; }
+  
+  /* Tím (Tổng mượn) */
+  .metric-purple .metric-icon { background: #f3e8ff; color: #9333ea; }
+  .metric-purple .metric-value { color: #9333ea; }
+  
+  /* Xanh mòng két (Thu mua) */
+  .metric-teal .metric-icon { background: #ccfbf1; color: #0d9488; }
+  .metric-teal .metric-value { color: #0d9488; }
+  
+  /* Hồng (Bài đăng) */
+  .metric-pink .metric-icon { background: #fce7f3; color: #db2777; }
+  .metric-pink .metric-value { color: #db2777; }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* =========================================
+   SIDEBAR (THIẾT KẾ MỚI)
+   ========================================= */
+
+.sidebar {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px; /* Bo góc to hơn chút */
+    padding: 1.5rem 1rem;
+    position: sticky; 
+    top: 100px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03); /* Bóng đổ mềm mại */
+    display: flex; 
+    flex-direction: column;
+  }
+  
+  /* Phần Header của Sidebar */
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0 0.5rem 1.2rem 0.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px dashed var(--line);
+  }
+  
+  .sidebar-header .brand-icon {
+    font-size: 1.4rem;
+  }
+  
+  .sidebar-header strong {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--green-dark);
+    letter-spacing: -0.5px;
+  }
+  
+  /* Danh sách các mục menu */
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem; /* Khoảng cách giữa các mục */
+  }
+  
+  /* Từng thẻ Link */
+  .sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem; /* Khoảng cách giữa Icon và chữ */
+    padding: 0.75rem 1rem;
+    color: var(--muted);
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+  
+  /* Icon trong menu */
+  .sidebar-nav .nav-icon {
+    font-size: 1.2rem;
+    opacity: 0.7;
+    transition: all 0.2s;
+  }
+  
+  /* Hiệu ứng Hover */
+  .sidebar-nav a:hover {
+    background: var(--tint);
+    color: var(--green-dark);
+    transform: translateX(4px); /* Nhích nhẹ sang phải */
+  }
+  
+  .sidebar-nav a:hover .nav-icon {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  
+  /* Trạng thái Active (Đang chọn) */
+  .sidebar-nav a.active {
+    background: var(--green) !important; /* Nền xanh đậm */
+    color: #ffffff !important; /* Chữ trắng */
+    box-shadow: 0 4px 12px rgba(49, 86, 71, 0.25);
+  }
+  
+  .sidebar-nav a.active .nav-icon {
+    opacity: 1; /* Icon sáng lên */
+  }
+  
+  /* Thêm vạch kẻ nhỏ bên trái của mục Active (tạo điểm nhấn) */
+  .sidebar-nav a.active::before {
+    content: '';
+    position: absolute;
+    left: -1rem; /* Đẩy ra ngoài mép trái của thẻ */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 20px;
+    background: var(--green-dark);
+    border-radius: 0 4px 4px 0;
+  }

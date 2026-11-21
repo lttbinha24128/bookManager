@@ -82,12 +82,11 @@ export function Status({ value, label }) {
 }
 
 export function Cover({ book }) {
-  // Nếu có ảnh thật (book.image), hiển thị ảnh
   if (book.image) {
-    return <img className="cover" src={book.image} alt={'Bìa ' + book.title} />;
+    // Đường dẫn phải có /api/images/ ở trước tên file
+    return <img className="cover" src={`/api/images/${book.image}`} alt={'Bìa ' + book.title} />;
   }
   
-  // Nếu không có ảnh, hiển thị Placeholder được thiết kế lại
   return (
     <div className="cover placeholder">
       <span style={{ fontSize: '3rem', opacity: 0.2, marginBottom: '0.5rem' }}>📖</span>

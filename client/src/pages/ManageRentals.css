@@ -1,0 +1,227 @@
+/* =========================================
+   QUẢN LÝ MƯỢN/TRẢ SÁCH (MANAGE RENTALS)
+   ========================================= */
+
+   .manage-rentals-page {
+    animation: fadeIn 0.4s ease-in-out;
+  }
+  
+/* -----------------------------------------
+   1. HEADER (BANNER TIÊU ĐỀ)
+   ----------------------------------------- */
+   .manage-rentals-page .page-header-banner {
+    background: var(--surface); /* Nền trắng */
+    border: 1px solid var(--line); /* Viền mờ */
+    border-radius: var(--radius); /* Bo góc */
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02); /* Đổ bóng nhẹ */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .manage-rentals-page .page-header-banner h1 {
+    font-family: "Source Sans 3", "Segoe UI", sans-serif !important;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--ink);
+    margin: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  
+  /* Thanh dọc màu xanh bên trái tiêu đề */
+  .manage-rentals-page .page-header-banner h1::before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 32px;
+    background: var(--green);
+    border-radius: 4px;
+  }
+  
+  .manage-rentals-page .page-header-banner .text-muted {
+    font-size: 1rem;
+    color: var(--muted);
+    margin: 0;
+    padding-left: 1.4rem; /* Thụt lề thẳng hàng với chữ */
+  }
+  
+/* -----------------------------------------
+   2. TOOLBAR (THANH CÔNG CỤ)
+   ----------------------------------------- */
+   .manage-rentals-page .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    position: relative;
+    z-index: 100;
+  }
+  
+  /* Chữ "Trạng thái" */
+  .manage-rentals-page .toolbar label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--ink); /* Đổi màu đậm hơn cho dễ đọc */
+    margin-right: 0.5rem;
+    margin-bottom: 0;
+  }
+  
+/* Ô Select (Dropdown) */
+.manage-rentals-page .toolbar select {
+    padding: 0 2.5rem 0 1rem; /* Chừa khoảng trống bên phải cho mũi tên */
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    height: 42px;
+    outline: none;
+    transition: all 0.2s;
+    background: var(--paper); /* Nền xám nhạt */
+    color: var(--green-dark); /* Chữ xanh đậm */
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    width: auto; 
+    min-width: 180px;
+    
+    /* Ẩn mũi tên mặc định của trình duyệt */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    
+    /* Tự vẽ mũi tên tam giác đặc (giống nút Thể loại) */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23315647%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center; /* Đặt mũi tên ở bên phải */
+    background-size: 0.7rem; /* Kích thước mũi tên */
+  }
+  
+  .manage-rentals-page .toolbar select:hover {
+    border-color: var(--green);
+  }
+  
+  .manage-rentals-page .toolbar select:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px var(--tint);
+  }
+  
+  /* Ô tìm kiếm */
+  .manage-rentals-page .toolbar input[type="search"] {
+    padding: 0 1rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    height: 42px;
+    outline: none;
+    transition: all 0.2s;
+    width: 300px;
+    margin-left: auto; /* Đẩy sang sát mép phải */
+    background: var(--surface);
+  }
+  
+  .manage-rentals-page .toolbar input[type="search"]:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px var(--tint);
+  }
+  
+  /* -----------------------------------------
+     3. BẢNG DỮ LIỆU
+     ----------------------------------------- */
+  .manage-rentals-page .table-scroll {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    overflow-x: auto;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  }
+  
+  .manage-rentals-page .table-scroll table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+  
+  .manage-rentals-page .table-scroll th {
+    background: var(--tint);
+    color: var(--green-dark);
+    font-weight: 700;
+    padding: 1rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--line);
+    white-space: nowrap;
+  }
+  
+  .manage-rentals-page .table-scroll td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+    font-size: 0.95rem;
+  }
+  
+  .manage-rentals-page .table-scroll tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .manage-rentals-page .table-scroll tr:hover {
+    background: var(--paper);
+  }
+  
+  /* -----------------------------------------
+     4. ĐỊNH DẠNG CỘT SÁCH & NGƯỜI DÙNG
+     ----------------------------------------- */
+  .manage-rentals-page .book-cell {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-width: 200px;
+  }
+  
+  .manage-rentals-page .book-cell img {
+    width: 45px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: var(--sand);
+  }
+  
+  .manage-rentals-page .book-cell strong {
+    display: block;
+    color: var(--ink);
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+    line-height: 1.3;
+  }
+  
+  .manage-rentals-page .book-cell small {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  
+  /* Nút thao tác */
+  .manage-rentals-page .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+  }
+  
+  .manage-rentals-page .action-buttons button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    min-width: 60px;
+    border-radius: 6px;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }

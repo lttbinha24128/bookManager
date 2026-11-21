@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api, dateLabel } from '../services/api';
 import { Action, Form, Load, SignInLink, Status, useAuth, useData } from '../components/shared';
-import './PostDetail.css'; // <-- Nhớ import file CSS
+import './PostDetail.css';
 
 export function PostDetail() {
   const { id } = useParams();
@@ -12,7 +12,7 @@ export function PostDetail() {
   return (
     <Load source={source}>
       {({ post, comments }) => (
-        <div className="post-detail-page"> {/* Class bao ngoài mới */}
+        <div className="post-detail-page">
           
           <div style={{ marginBottom: '1rem' }}>
             <Link to="/forum" style={{ color: 'var(--muted)', fontWeight: '600' }}>
@@ -39,9 +39,16 @@ export function PostDetail() {
               {post.content}
             </div>
             
-            {post.image && <img className="post-attachment" src={post.image} alt="Ảnh đính kèm bài đăng" />}
+            {/* SỬA ĐƯỜNG DẪN ẢNH TẠI ĐÂY */}
+            {post.image && (
+              <img 
+                className="post-attachment" 
+                src={`/api/images/${post.image}`} 
+                alt="Ảnh đính kèm bài đăng" 
+              />
+            )}
             
-            {/* Nút hoàn tất giao dịch (Chỉ hiện với chủ bài viết) */}
+            {/* Nút hoàn tất giao dịch */}
             {post.status === 'approved' && post.user?._id === user?._id && (
               <div style={{ marginTop: '1.5rem', borderTop: '1px dashed var(--line)', paddingTop: '1.5rem' }}>
                 <Action path={'/posts/' + id + '/close'} onDone={source.reload}>

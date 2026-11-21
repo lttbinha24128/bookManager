@@ -1,8 +1,12 @@
 const path = require('node:path');
 require('dotenv').config({ path: path.join(__dirname, '../.env'), quiet: true });
 const express = require('express');
+const mongoose = require('mongoose');
 const connectDatabase = require('./config/database');
 const api = require('./routes/api');
+
+// Bắt buộc phải require model Image ở đây để mongoose nhận diện được
+require('./models/Image'); 
 
 const app = express();
 app.disable('x-powered-by');
@@ -11,9 +15,31 @@ app.use((req, res, next) => {
   next();
 });
 app.use(express.json({ limit: '64kb' }));
+
+// Phục vụ ảnh tĩnh (nếu cần dùng cho các file không lưu trong DB)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'), { index: false }));
+
+// API lấy ảnh từ Database
+app.get('/api/images/:filename', async (req, res) => {
+  try {
+    const Image = mongoose.model('Image'); 
+    const image = await Image.findOne({ filename: req.params.filename });
+    
+    if (!image) {
+      return res.status(404).json({ message: 'Không tìm thấy ảnh' });
+    }
+    
+    res.set('Content-Type', image.contentType);
+    res.send(image.data); 
+  } catch (error) {
+    console.error('Lỗi lấy ảnh:', error);
+    res.status(500).json({ message: 'Lỗi server' });
+  }
+});
+
 app.use('/api', api);
 app.use('/api', (req, res) => res.status(404).json({ message: 'Không tìm thấy đường dẫn.' }));
+
 const client = path.join(__dirname, '../client/dist');
 app.use(express.static(client));
 app.get('/{*route}', (req, res, next) => {
@@ -23,10 +49,10 @@ app.get('/{*route}', (req, res, next) => {
 
 app.use((error, req, res, next) => {
   if (res.headersSent) return next(error);
-  if (error.code === 11000) return res.status(409).json({ message: 'Dữ liệu đã tồn tại. Hãy kiểm tra tên đăng nhập, email, thể loại hoặc đầu sách.' });
+  if (error.code === 11000) return res.status(409).json({ message: 'Dữ liệu đã tồn tại...' });
   if (error.code === 'LIMIT_FILE_SIZE') return res.status(400).json({ message: 'Ảnh tối đa 5 MB.' });
   if (error.name === 'MulterError') return res.status(400).json({ message: 'Dữ liệu tải lên không hợp lệ.' });
-  if (['ValidationError', 'CastError'].includes(error.name)) return res.status(400).json({ message: 'Dữ liệu không hợp lệ. Hãy kiểm tra các ô trong biểu mẫu.' });
+  if (['ValidationError', 'CastError'].includes(error.name)) return res.status(400).json({ message: 'Dữ liệu không hợp lệ...' });
   const status = error.status || 500;
   if (status >= 500) console.error(error);
   res.status(status).json({ message: status >= 500 ? 'Có lỗi xảy ra trên máy chủ.' : error.message });

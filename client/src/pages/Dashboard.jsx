@@ -1,16 +1,45 @@
 import React from 'react';
+import './Admin.css';
 import { Link } from 'react-router-dom';
 import { Load, useData } from '../components/shared';
 
 export function Dashboard() {
   const source = useData('/admin/dashboard');
+  
+  // Cấu trúc mới: [key, title, page, icon, colorClass]
   const metrics = [
-    ['users', 'Người dùng', 'users'], ['books', 'Đầu sách đang hiển thị', 'books'],
-    ['copies', 'Cuốn còn trong kho', 'books'], ['pending', 'Phiếu chờ giao', 'rentals'],
-    ['overdue', 'Phiếu quá hạn', 'rentals'], ['rentals', 'Tổng phiếu mượn/thuê', 'rentals'],
-    ['purchases', 'Đề xuất chờ thu mua', 'books?tab=sales'], ['posts', 'Bài đăng chờ duyệt', 'forum'],
+    ['users', 'Người dùng', 'users', '👤', 'blue'],
+    ['books', 'Đầu sách hiển thị', 'books', '📚', 'green'],
+    ['copies', 'Cuốn trong kho', 'books', '📦', 'orange'],
+    ['pending', 'Phiếu chờ giao', 'rentals', '⏳', 'yellow'],
+    ['overdue', 'Phiếu quá hạn', 'rentals', '⚠️', 'red'],
+    ['rentals', 'Tổng phiếu mượn', 'rentals', '📝', 'purple'],
+    ['purchases', 'Đề xuất thu mua', 'books?tab=sales', '🛒', 'teal'],
+    ['posts', 'Bài chờ duyệt', 'forum', '💬', 'pink'],
   ];
-  return <><h1>Tổng quan</h1><Load source={source}>{data =>
-    <div className="metrics">{metrics.map(([key, title, page]) => <Link className="card card-body metric" key={key} to={'/admin/' + page}><span>{title}</span><strong>{data[key]}</strong></Link>)}</div>
-  }</Load></>;
+
+  return (
+    <div className="admin-dashboard">
+      <div className="dashboard-header">
+        <h1>Tổng quan</h1>
+        <p className="text-muted">Chào mừng trở lại, đây là tình hình thư viện hôm nay.</p>
+      </div>
+
+      <Load source={source}>
+        {data => (
+          <div className="metrics-grid">
+            {metrics.map(([key, title, page, icon, color]) => (
+              <Link className={`metric-card metric-${color}`} key={key} to={'/admin/' + page}>
+                <div className="metric-icon">{icon}</div>
+                <div className="metric-content">
+                  <span className="metric-title">{title}</span>
+                  <strong className="metric-value">{data[key]}</strong>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+      </Load>
+    </div>
+  );
 }

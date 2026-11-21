@@ -1,0 +1,336 @@
+/* =========================================
+   QUẢN LÝ SÁCH (MANAGE BOOKS) - FILE HOÀN CHỈNH
+   ========================================= */
+
+   .manage-books-page {
+    animation: fadeIn 0.4s ease-in-out;
+  }
+  
+/* -----------------------------------------
+   1. HEADER (BANNER TIÊU ĐỀ)
+   ----------------------------------------- */
+   .manage-books-page .page-header-banner {
+    /* Khôi phục lại khung trắng */
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    
+    /* Căn chỉnh nội dung */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .manage-books-page .page-header-banner h1 {
+    font-family: "Source Sans 3", "Segoe UI", sans-serif !important;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--ink);
+    margin: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  
+  /* Thanh dọc màu xanh bên trái tiêu đề */
+  .manage-books-page .page-header-banner h1::before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 28px;
+    background: var(--green);
+    border-radius: 4px;
+  }
+  
+  .manage-books-page .page-header-banner .text-muted {
+    font-size: 1rem;
+    color: var(--muted);
+    margin: 0;
+    padding-left: 1.4rem;
+  }
+  
+  /* -----------------------------------------
+     2. TABS (KHO SÁCH / THU MUA)
+     ----------------------------------------- */
+  .manage-books-page .tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-bottom: 2px solid var(--line);
+    margin-bottom: 1.5rem;
+    width: 100%;
+  }
+  
+  .manage-books-page .tabs button {
+    background: transparent;
+    border: none;
+    padding: 1rem;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+  }
+  
+  .manage-books-page .tabs button:hover {
+    background: var(--tint);
+    color: var(--green-dark);
+  }
+  
+  .manage-books-page .tabs button.active {
+    background: var(--surface);
+    color: var(--green-dark);
+    border-bottom: 3px solid var(--green);
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.02);
+  }
+  
+  /* -----------------------------------------
+     3. TOOLBAR (THANH CÔNG CỤ)
+     ----------------------------------------- */
+  .manage-books-page .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    position: relative;
+    z-index: 100;
+  }
+  
+  /* Nút chính (Thêm đầu sách) */
+  .manage-books-page .toolbar > button:first-child {
+    background: var(--green);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 10px rgba(49, 86, 71, 0.2);
+    height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .manage-books-page .toolbar > button:first-child:hover {
+    background: var(--green-dark);
+    transform: translateY(-2px);
+  }
+  
+  /* Ô tìm kiếm trên Toolbar */
+  .manage-books-page .toolbar input[type="search"] {
+    padding: 0 1rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    width: 300px;
+    max-width: 100%;
+    height: 42px;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-left: auto; /* Đẩy sang phải */
+  }
+  .manage-books-page .toolbar input[type="search"]:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px var(--tint);
+  }
+  
+/* -----------------------------------------
+   4. DROPDOWN (THẺ DETAILS)
+   ----------------------------------------- */
+   .manage-books-page .toolbar details {
+    position: relative;
+    margin: 0;
+    height: 42px;
+    /* Khi dropdown đóng, z-index bình thường */
+    z-index: 1; 
+  }
+  
+  /* Khi dropdown MỞ, đẩy z-index lên cao nhất để đè lên bảng */
+  .manage-books-page .toolbar details[open] {
+    z-index: 9999; 
+  }
+  
+  .manage-books-page .toolbar summary {
+    font-weight: 600;
+    color: var(--green-dark);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 100%;
+    padding: 0 1rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .manage-books-page .toolbar summary:hover {
+    border-color: var(--green);
+  }
+  
+  .manage-books-page .toolbar details[open] summary {
+    border-color: var(--green);
+    background: var(--surface);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  }
+  
+  .manage-books-page .toolbar summary::-webkit-details-marker {
+    display: none;
+  }
+  
+  .manage-books-page .toolbar summary::after {
+    content: '▼';
+    font-size: 0.7rem;
+    transition: transform 0.2s;
+  }
+  
+  .manage-books-page .toolbar details[open] summary::after {
+    transform: rotate(180deg);
+  }
+  
+  /* Nội dung xổ xuống của Dropdown */
+  .manage-books-page .toolbar details > div {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    /* Tăng z-index cho chính nội dung xổ xuống */
+    z-index: 9999; 
+    min-width: 250px;
+  }
+  
+  /* Class bổ sung cho dropdown rộng (Sửa/Xóa thể loại) */
+  .manage-books-page .toolbar .dropdown-wide {
+    width: 350px;
+  }
+  
+  /* -----------------------------------------
+     5. BẢNG DỮ LIỆU
+     ----------------------------------------- */
+  .manage-books-page .table-scroll {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    overflow-x: auto;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  }
+  
+  .manage-books-page .table-scroll table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+  
+  .manage-books-page .table-scroll th {
+    background: var(--tint);
+    color: var(--green-dark);
+    font-weight: 700;
+    padding: 1rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--line);
+    white-space: nowrap;
+  }
+  
+  .manage-books-page .table-scroll td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+    font-size: 0.95rem;
+  }
+  
+  .manage-books-page .table-scroll tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .manage-books-page .table-scroll tr:hover {
+    background: var(--paper);
+  }
+  
+  /* Cột hiển thị sách (Ảnh + Tên) */
+  .manage-books-page .book-cell {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-width: 250px;
+  }
+  
+  .manage-books-page .book-cell img {
+    width: 45px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: var(--sand);
+  }
+  
+  .manage-books-page .book-cell strong {
+    display: block;
+    color: var(--ink);
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+    line-height: 1.3;
+  }
+  
+  .manage-books-page .book-cell small {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  
+  /* Nút thao tác trong bảng (Sửa, Ẩn) */
+  .manage-books-page .table-scroll .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+  }
+  
+  .manage-books-page .table-scroll .action-buttons button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    min-width: 60px;
+    border-radius: 6px;
+  }
+  
+  /* -----------------------------------------
+     6. FORM THÊM/SỬA SÁCH (CARD)
+     ----------------------------------------- */
+  .manage-books-page .form-wrapper {
+    margin-bottom: 2rem;
+    background: var(--surface);
+  }
+  
+  .manage-books-page .form-header {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.5rem;
+  }
+  
+  .manage-books-page .form-header h2 {
+    margin: 0;
+    font-size: 1.3rem;
+  }
+  
+  /* -----------------------------------------
+     7. ANIMATION
+     ----------------------------------------- */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }

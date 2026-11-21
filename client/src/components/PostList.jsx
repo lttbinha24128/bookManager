@@ -11,8 +11,8 @@ export function PostList({ posts }) {
       {posts.map(post => (
         <article className="post-row" key={post._id}>
           
-          {/* Ảnh thumbnail (nếu có) */}
-          {post.image && <img className="post-thumb" src={post.image} alt="" />}
+          {/* SỬA ĐƯỜNG DẪN ẢNH TẠI ĐÂY */}
+          {post.image && <img className="post-thumb" src={`/api/images/${post.image}`} alt="" />}
           
           {/* Phần nội dung chính */}
           <div className="post-content">

@@ -303,7 +303,7 @@ header {
   border-bottom: 1px solid var(--line); 
   position: sticky; /* Ghim navbar lên đầu khi cuộn */
   top: 0;
-  z-index: 100;
+  z-index: 1000;
   box-shadow: 0 4px 12px rgba(0,0,0,0.03); /* Đổ bóng nhẹ */
 }
 
@@ -585,4 +585,48 @@ tbody td:not(:first-child) .action {
 @keyframes slideIn {
   from { transform: translateX(100%); opacity: 0; }
   to { transform: translateX(0); opacity: 1; }
+}
+
+/* =========================================
+   NÚT THAO TÁC TRONG BẢNG (DÙNG CHUNG)
+   ========================================= */
+
+/* Container chứa các nút */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+/* Style chung cho nút trong bảng */
+.action-buttons button,
+.action-buttons a.button,
+.action-buttons .secondary,
+.action-buttons .action button {
+  padding: 0.4rem 0.8rem !important;
+  font-size: 0.85rem !important;
+  border-radius: 6px !important;
+  height: 32px !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+  border: 1px solid var(--line) !important;
+  background: var(--surface) !important;
+  color: var(--muted) !important;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Hiệu ứng hover */
+.action-buttons button:hover,
+.action-buttons a.button:hover,
+.action-buttons .secondary:hover,
+.action-buttons .action button:hover {
+  background: var(--tint) !important;
+  color: var(--green-dark) !important;
+  border-color: var(--green) !important;
 }
