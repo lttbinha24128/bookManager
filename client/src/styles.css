@@ -16,6 +16,10 @@
   font-family: "Source Sans 3", "Segoe UI", sans-serif; 
   font-size: 16px;
   line-height: 1.55;
+  /* Chỉ định font chính cho toàn bộ trang */
+  font-family: "Source Sans 3", "Segoe UI", sans-serif; 
+  font-size: 16px;
+  line-height: 1.55;
   color: var(--ink);
   background: var(--paper);
 }
@@ -27,9 +31,11 @@ button, input, select, textarea { font: inherit; }
 button, .button {
   display: inline-block;
   padding: .62rem 1.2rem; /* Tăng nhẹ padding cho nút trông cân đối hơn */
+  padding: .62rem 1.2rem; /* Tăng nhẹ padding cho nút trông cân đối hơn */
   border: 1px solid var(--green);
   border-radius: 8px;
   background: var(--green);
+  color: #fff; /* Chữ màu trắng */
   color: #fff; /* Chữ màu trắng */
   font-weight: 650;
   text-decoration: none;
@@ -42,7 +48,25 @@ button:hover, .button:hover {
   color: #fff; 
 }
 
+  transition: background 0.2s, transform 0.1s;
+}
+
+button:hover, .button:hover { 
+  background: var(--green-dark); 
+  color: #fff; 
+}
+
 button:disabled { opacity: .65; cursor: wait; }
+/* Nút phụ (Secondary Button) - Dùng cho Đăng xuất */
+.secondary { 
+  color: var(--green-dark); 
+  background: transparent; 
+  border: 1px solid transparent; /* Bỏ viền để trông nhẹ nhàng hơn */
+}
+.secondary:hover { 
+  background: var(--tint); 
+  color: var(--green-dark); 
+}
 /* Nút phụ (Secondary Button) - Dùng cho Đăng xuất */
 .secondary { 
   color: var(--green-dark); 
@@ -66,9 +90,16 @@ header { background: var(--surface); border-bottom: 1px solid var(--line); }
 .brand { font-weight: 800; font-size: 1.2rem; }
 .brand span { display: inline-grid; place-items: center; width: 2rem; height: 2rem; background: var(--tint); border-radius: 6px; margin-right: .25rem; }
 main { min-height: 70vh; padding-block: 2rem 2rem; }
+main { min-height: 70vh; padding-block: 2rem 2rem; }
 footer { border-top: 1px solid var(--line); background: var(--surface); padding-block: 1.4rem; }
 footer strong { margin-right: auto; }
 h1, h2, h3, p { overflow-wrap: anywhere; }
+h1, h2 { 
+  font-family: "Source Sans 3", "Segoe UI", sans-serif; /* Đổi sang font hiện đại */
+  font-weight: 800; /* Làm đậm để phân cấp */
+  line-height: 1.2; 
+  margin: 0 0 1rem; 
+}
 h1, h2 { 
   font-family: "Source Sans 3", "Segoe UI", sans-serif; /* Đổi sang font hiện đại */
   font-weight: 800; /* Làm đậm để phân cấp */
@@ -139,6 +170,7 @@ tr:last-child td { border-bottom: 0; }
 .book-cell small { display: block; }
 @media (max-width: 760px) {
   .container { width: calc(100% - 1.6rem); }
+  .book-detail, .admin-layout { grid-template-columns: 1fr; }
   .book-detail, .admin-layout { grid-template-columns: 1fr; }
   .nav, .nav nav, .account { gap: .4rem; }
   .account { margin-left: auto; }

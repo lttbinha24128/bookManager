@@ -38,6 +38,25 @@ async function setUserStatus(req, res) {
   res.json(user);
 }
 
+async function getUserDetail(req, res) {
+  const user = await User.findById(req.params.id).select('-passwordHash');
+  if (!user) throw fail(404, 'Không tìm thấy người dùng.');
+
+  const filter = { user: user._id };
+  const [rentalList, saleList, postList] = await Promise.all([
+    rentals(filter),
+    sales(filter),
+    Post.find(filter).sort(recent)
+  ]);
+
+  res.json({ 
+    user, 
+    rentals: rentalList, 
+    sales: saleList, 
+    posts: postList 
+  });
+}
+
 async function listForum(req, res) {
   const [posts, comments] = await Promise.all([
     Post.find({ status: { $ne: 'removed' } }).populate('user', 'fullName').sort(recent),
@@ -47,7 +66,7 @@ async function listForum(req, res) {
 }
 
 module.exports = {
-  dashboard, profile, listUsers, setUserStatus, listForum,
+  dashboard, profile, listUsers, setUserStatus, listForum, getUserDetail,
   listBooks: async (req, res) => res.json(await Book.find().populate('category').sort(recent)),
   listRentals: async (req, res) => res.json(await rentals({})),
   listSales: async (req, res) => res.json(await sales({})),

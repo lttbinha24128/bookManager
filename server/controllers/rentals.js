@@ -27,7 +27,7 @@ async function requestRental(req, res) {
 
 async function changeRental(req, res) {
   const action = req.body.action;
-  if (!['lend', 'return', 'cancel'].includes(action)) throw fail(400, 'Thao tác không hợp lệ.');
+    if (!['lend', 'return', 'cancel'].includes(action)) throw fail(400, 'Thao tác không hợp lệ.');
   const previous = action === 'return' ? 'active' : 'pending';
   const rental = await Rental.findOneAndUpdate(
     { _id: req.params.id, status: previous, $or: [{ operation: null }, { operation: action }] },
@@ -39,7 +39,6 @@ async function changeRental(req, res) {
   if (action !== 'cancel') {
     const operation = action + ':' + rental.id;
     const lending = action === 'lend';
-    // Ghi dấu cùng lúc với thay đổi tồn kho để thử lại không làm cộng/trừ hai lần.
     const filter = { _id: rental.book, stockOperations: { $ne: operation } };
     if (lending) Object.assign(filter, { quantity: { $gt: 0 }, status: 'available' });
     const result = await Book.updateOne(filter, {
@@ -49,8 +48,19 @@ async function changeRental(req, res) {
       await Rental.updateOne({ _id: rental.id, status: previous, operation: action }, { operation: null });
       throw fail(409, 'Không thể cập nhật tồn kho. Hãy kiểm tra đầu sách.');
     }
-    next.status = lending ? 'active' : 'completed';
+        next.status = lending ? 'active' : 'completed';
     next[lending ? 'borrowedAt' : 'returnedAt'] = new Date();
+    
+    if (!lending) { 
+      const now = new Date();
+      if (now > rental.dueDate) {
+        const overdueDays = Math.ceil((now.getTime() - rental.dueDate.getTime()) / dayMs);
+        const penaltyFee = overdueDays * rental.dailyRate;
+        if (penaltyFee > 0) {
+          next.totalFee = rental.totalFee + penaltyFee;
+        }
+      }
+    }
   }
   const updated = await Rental.findOneAndUpdate(
     { _id: rental.id, status: previous, operation: action }, { ...next, operation: null }, { returnDocument: 'after' },

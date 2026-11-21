@@ -1,3 +1,4 @@
+const mongoose = require('mongoose'); // Thêm dòng này để kiểm tra ObjectId
 const Book = require('../models/Book');
 const Category = require('../models/Category');
 const SellRequest = require('../models/SellRequest');
@@ -31,18 +32,89 @@ async function addCategory(req, res) {
   res.status(201).json(await Category.create({ name: req.body.name }));
 }
 
+async function updateCategory(req, res) {
+  const { name } = req.body;
+  if (!name || !name.trim()) throw fail(400, 'Tên thể loại không được để trống.');
+  try {
+    const category = await Category.findByIdAndUpdate(
+      req.params.id, 
+      { name: name.trim() }, 
+      { returnDocument: 'after' }
+    );
+    if (!category) throw fail(404, 'Không tìm thấy thể loại.');
+    res.json(category);
+  } catch (error) {
+    if (error.code === 11000) throw fail(409, 'Tên thể loại này đã tồn tại.');
+    throw error;
+  }
+}
+
+async function deleteCategory(req, res) {
+  const bookCount = await Book.countDocuments({ category: req.params.id });
+  if (bookCount > 0) {
+    throw fail(400, `Không thể xóa! Đang có ${bookCount} cuốn sách thuộc thể loại này.`);
+  }
+  const category = await Category.findByIdAndDelete(req.params.id);
+  if (!category) throw fail(404, 'Không tìm thấy thể loại.');
+  res.json({ message: 'Đã xóa thể loại thành công.' });
+}
+
 async function categoryExists(id) {
-  if (!id || !await Category.exists({ _id: id })) throw fail(400, 'Hãy chọn thể loại hợp lệ.');
+  // Kiểm tra xem ID có đúng định dạng ObjectId của MongoDB không để tránh lỗi CastError
+  if (!id || !mongoose.isValidObjectId(id) || !await Category.exists({ _id: id })) {
+    throw fail(400, 'Hãy chọn thể loại hợp lệ.');
+  }
 }
 
 async function saveBook(req, res) {
   const { title, author, category, volumeNumber, dailyRate, description } = req.body;
+  
+  if (!title || !title.trim()) throw fail(400, 'Tên sách không được để trống.');
+  if (!author || !author.trim()) throw fail(400, 'Tên tác giả không được để trống.');
+  
+  // Xử lý Số tập (nếu có)
+  let vol = null;
+  if (volumeNumber !== undefined && volumeNumber !== '') {
+    vol = Number(volumeNumber);
+    if (isNaN(vol) || !Number.isInteger(vol) || vol < 1) {
+      throw fail(400, 'Số tập phải là số nguyên lớn hơn hoặc bằng 1.');
+    }
+  }
+
+  // Xử lý Giá thuê
+  const rate = Number(dailyRate || 0);
+  if (isNaN(rate) || !Number.isInteger(rate) || rate < 0) {
+    throw fail(400, 'Giá thuê phải là số nguyên không âm (không nhập số thập phân).');
+  }
+
+  // Xử lý Tồn kho
+  let qty = undefined;
+  if (req.body.quantity !== undefined && req.body.quantity !== '') {
+    qty = Number(req.body.quantity);
+    if (isNaN(qty) || !Number.isInteger(qty) || qty < 0) {
+      throw fail(400, 'Số lượng tồn kho phải là số nguyên không âm (không nhập số thập phân).');
+    }
+  }
+
   await categoryExists(category);
   const book = req.params.id ? await Book.findById(req.params.id).select('+stockOperations') : new Book();
   if (!book) throw fail(404, 'Không tìm thấy sách.');
-  const fields = { title, author, category, volumeNumber: volumeNumber || null, dailyRate, description };
-  // Chỉ sửa số lượng khi thủ thư nhập tồn mới. Phiếu mượn tự cập nhật tồn.
-  if (req.body.quantity !== undefined && req.body.quantity !== '') fields.quantity = req.body.quantity;
+  
+  const fields = { 
+    title: title.trim(), 
+    author: author.trim(), 
+    category, 
+    volumeNumber: vol, 
+    dailyRate: rate,
+    description: description ? description.trim() : ''
+  };
+
+  if (qty !== undefined) {
+    fields.quantity = qty;
+  } else if (!req.params.id) {
+    fields.quantity = 0;
+  }
+
   await withImage(req.file, async image => {
     book.set(fields);
     if (image) book.image = image;
@@ -60,9 +132,35 @@ async function setVisibility(req, res) {
 
 async function submitSale(req, res) {
   const { title, author, category, volumeNumber, description, expectedPrice } = req.body;
+  if (!title || !title.trim()) throw fail(400, 'Tên sách không được để trống.');
+  if (!author || !author.trim()) throw fail(400, 'Tên tác giả không được để trống.');
+  if (!description || !description.trim()) throw fail(400, 'Vui lòng nhập tình trạng sách.');
+
+  // Xử lý số tập
+  let vol = null;
+  if (volumeNumber !== undefined && volumeNumber !== '') {
+    vol = Number(volumeNumber);
+    if (isNaN(vol) || !Number.isInteger(vol) || vol < 1) {
+      throw fail(400, 'Số tập phải là số nguyên lớn hơn hoặc bằng 1.');
+    }
+  }
+
+  const price = Number(expectedPrice);
+  if (isNaN(price) || !Number.isInteger(price) || price < 0) {
+    throw fail(400, 'Giá mong muốn phải là số nguyên không âm (có thể nhập 0 nếu muốn tặng).');
+  }
+
   await categoryExists(category);
+  
   const sale = await withImage(req.file, image => SellRequest.create({
-    user: req.user._id, title, author, category, volumeNumber: volumeNumber || null, description, expectedPrice, image,
+    user: req.user._id, 
+    title: title.trim(), 
+    author: author.trim(), 
+    category, 
+    volumeNumber: vol, 
+    description: description.trim(), 
+    expectedPrice: price, // Dùng biến price đã ép kiểu số
+    image,
   }));
   res.status(201).json(sale);
 }
@@ -98,5 +196,4 @@ async function decideSale(req, res) {
   res.json(saved);
 }
 
-module.exports = { listBooks, getBook, listCategories, addCategory, saveBook, setVisibility, submitSale, decideSale, fail };
-
+module.exports = { listBooks, getBook, listCategories, addCategory, saveBook, setVisibility, submitSale, decideSale, updateCategory, deleteCategory, fail };

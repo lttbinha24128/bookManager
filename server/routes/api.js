@@ -44,5 +44,8 @@ router.patch('/admin/users/:id', admin.setUserStatus);
 router.get('/admin/forum', admin.listForum);
 router.patch('/admin/posts/:id', forum.moderatePost);
 router.delete('/admin/comments/:id', forum.removeComment);
+router.patch('/admin/categories/:id', catalog.updateCategory);
+router.delete('/admin/categories/:id', catalog.deleteCategory);
+router.get('/admin/users/:id', admin.getUserDetail);
 
 module.exports = router;
