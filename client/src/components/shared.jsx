@@ -83,8 +83,10 @@ export function Status({ value, label }) {
 
 export function Cover({ book }) {
   if (book.image) {
-    // Đường dẫn phải có /api/images/ ở trước tên file
-    return <img className="cover" src={`/api/images/${book.image}`} alt={'Bìa ' + book.title} />;
+    // ✅ Tự động làm sạch đường dẫn: Xóa chữ /uploads/ hoặc dấu / thừa ở đầu
+    let cleanName = book.image.replace(/^\/?uploads\//, '').replace(/^\/+/, '');
+    
+    return <img className="cover" src={`/api/images/${cleanName}`} alt={'Bìa ' + book.title} />;
   }
   
   return (
