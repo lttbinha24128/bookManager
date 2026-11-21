@@ -7,6 +7,23 @@ const admin = require('../controllers/admin');
 const { requireUser, requireAdmin } = require('../middleware/auth');
 const { upload } = require('../middleware/upload');
 
+router.get('/images/:filename', async (req, res) => {
+  try {
+    const Image = mongoose.model('Image'); 
+    const image = await Image.findOne({ filename: req.params.filename });
+    
+    if (!image) {
+      return res.status(404).json({ message: 'Không tìm thấy ảnh' });
+    }
+    
+    res.set('Content-Type', image.contentType);
+    res.send(image.data); 
+  } catch (error) {
+    console.error('Lỗi lấy ảnh:', error);
+    res.status(500).json({ message: 'Lỗi server' });
+  }
+});
+
 router.get('/health', (req, res) => res.json({ ok: true }));
 router.get('/books', catalog.listBooks);
 router.get('/books/:id', catalog.getBook);
