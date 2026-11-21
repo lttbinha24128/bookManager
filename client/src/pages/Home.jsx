@@ -10,7 +10,8 @@ export function Home() {
 
   return (
     <div className="home-page">
-      {/* 1. Hero Section */}
+      
+      {/* 1. Hero Section (Khung thư viện sách) */}
       <section className="hero">
         <div className="hero-content">
           <h1>Thư viện sách</h1>
@@ -22,7 +23,7 @@ export function Home() {
         </div>
       </section>
 
-      {/* 2. Thể loại */}
+      {/* 2. Khám phá thể loại */}
       <section style={{ marginTop: '3rem' }}>
         <div className="spread">
           <h2>Khám phá thể loại</h2>
@@ -61,7 +62,7 @@ export function Home() {
         </Load>
       </section>
 
-      {/* 5. Features */}
+      {/* 5. Features (Tính năng) */}
       <section style={{ marginTop: '4rem', marginBottom: '2rem' }}>
         <div className="features-grid">
           <div className="feature-item">
