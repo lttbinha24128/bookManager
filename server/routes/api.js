@@ -8,11 +8,19 @@ const admin = require('../controllers/admin');
 const { requireUser, requireAdmin } = require('../middleware/auth');
 const { upload } = require('../middleware/upload');
 
-router.get('/images/:filename', async (req, res) => {
+router.get('/images/*filename', async (req, res) => {
   try {
+    // Lấy toàn bộ chuỗi phía sau /api/images/
+    let rawName = req.params.filename[0]; 
+    
+    // Tự động xóa chữ /uploads/ hoặc các dấu / bị dư ở đầu
+    let cleanName = rawName.replace(/^\/+uploads\/+/, '').replace(/^\/+/, ''); 
+
     const Image = mongoose.model('Image'); 
-    const image = await Image.findOne({ filename: req.params.filename });
+    const image = await Image.findOne({ filename: cleanName });
+    
     if (!image) return res.status(404).json({ message: 'Không tìm thấy ảnh' });
+    
     res.set('Content-Type', image.contentType);
     res.send(image.data); 
   } catch (error) {
