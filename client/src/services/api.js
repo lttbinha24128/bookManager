@@ -12,8 +12,6 @@ export async function api(path, { method = 'GET', body, signal } = {}) {
   return data;
 }
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-
 export const money = value => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
 export const dateLabel = value => value ? new Date(value).toLocaleDateString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' }) : '—';
 export const today = () => new Date(Date.now() + 25200000).toISOString().slice(0, 10);
