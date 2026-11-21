@@ -8,17 +8,16 @@ async function fix() {
   await connectDatabase();
   console.log('⏳ Đang kết nối Database...');
   
-  const books = await Book.find({ image: { $ne: null } });
+  // Tìm tất cả sách có chứa chữ /uploads/ trong đường dẫn ảnh
+  const books = await Book.find({ image: /\/uploads\// });
   let count = 0;
   
   for (const b of books) {
-    // Nếu đường dẫn ảnh không bắt đầu bằng /api/ hoặc http
-    if (b.image && !b.image.startsWith('/api/') && !b.image.startsWith('http')) {
-      b.image = '/api/images/' + b.image;
-      await b.save();
-      count++;
-      console.log(`✅ Đã sửa: ${b.title}`);
-    }
+    // Xóa chữ /uploads/ đi, chỉ giữ lại tên file
+    b.image = b.image.replace('/uploads/', '');
+    await b.save();
+    count++;
+    console.log(`✅ Đã sửa: ${b.title} -> ${b.image}`);
   }
   
   console.log(`🎉 Xong! Đã sửa ${count} cuốn sách.`);
