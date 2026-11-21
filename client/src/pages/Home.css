@@ -1,0 +1,491 @@
+/* =========================================
+   0. CẤU HÌNH CHUNG & FONT CHỮ
+   ========================================= */
+   .home-page h1, 
+   .home-page h2, 
+   .home-page h3 {
+     font-family: "Source Sans 3", "Segoe UI", sans-serif !important;
+     font-weight: 700;
+     letter-spacing: -0.5px;
+   }
+   
+   /* Quản lý khoảng cách các section */
+   .home-page {
+     padding-bottom: 2rem;
+   }
+   .home-page section {
+     margin-top: 3.5rem;
+   }
+   .home-page section:first-child {
+     margin-top: 0;
+   }
+   .home-page section:last-child {
+     margin-bottom: 0; 
+   }
+   
+   /* Tiêu đề section (Sách mới, Diễn đàn...) */
+   section > .spread {
+     margin-bottom: 1.5rem;
+     border-bottom: 2px solid var(--line);
+     padding-bottom: 0.5rem;
+   }
+   section > .spread h2 {
+     margin: 0;
+     position: relative;
+   }
+   section > .spread h2::after {
+     content: '';
+     position: absolute;
+     bottom: -0.6rem;
+     left: 0;
+     width: 40px;
+     height: 3px;
+     background: var(--green);
+     border-radius: 2px;
+   }
+   section > .spread a {
+     font-weight: 600;
+     color: var(--green);
+     transition: color 0.2s, transform 0.2s;
+     display: inline-flex;
+     align-items: center;
+   }
+   section > .spread a:hover {
+     color: var(--green-dark);
+     transform: translateX(4px);
+   }
+   
+   /* =========================================
+      1. HERO SECTION (Banner)
+      ========================================= */
+   .hero {
+     display: grid;
+     grid-template-columns: 1.2fr 1fr;
+     gap: 2rem;
+     align-items: center;
+     padding: clamp(2rem, 5vw, 4rem);
+     background: linear-gradient(135deg, var(--tint) 0%, #f4f7f4 100%);
+     border: 1px solid var(--line);
+     border-radius: 24px;
+     box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+     overflow: hidden;
+     position: relative;
+   }
+   
+   .hero h1 { 
+     font-family: "Source Sans 3", "Segoe UI", sans-serif !important; 
+     font-size: clamp(2.5rem, 5vw, 4.5rem); 
+     font-weight: 800; 
+     color: var(--ink); 
+     margin-bottom: 1rem;
+     line-height: 1.15;
+     letter-spacing: -1px;
+   }
+   
+   .hero p { 
+     font-size: 1.1rem;
+     color: var(--muted);
+     max-width: 45ch; 
+     margin-bottom: 2rem; 
+   }
+   
+   /* Kệ sách */
+   .shelf { 
+     height: 220px; 
+     display: flex; 
+     gap: 8px; 
+     align-items: flex-end; 
+     justify-content: center; 
+     border-bottom: 10px solid #5a4f3e; 
+     padding-inline: 1rem; 
+     position: relative;
+   }
+   .shelf::after {
+     content: '';
+     position: absolute;
+     bottom: -15px;
+     width: 100%;
+     height: 10px;
+     background: rgba(0,0,0,0.1);
+     filter: blur(5px);
+     border-radius: 50%;
+   }
+   .shelf i { 
+     width: 14%; 
+     border-radius: 4px 4px 2px 2px; 
+     background: #446957; 
+     border-top: 14px solid rgba(255,255,255,0.2); 
+     border-bottom: 12px solid rgba(255,255,255,0.15); 
+     transition: transform 0.3s ease;
+   }
+   .shelf:hover i { transform: translateY(-5px); }
+   .shelf i:nth-child(1) { height: 83%; }
+   .shelf i:nth-child(2) { height: 100%; background: #ac754d; }
+   .shelf i:nth-child(3) { height: 71%; background: #617780; }
+   .shelf i:nth-child(4) { height: 90%; background: #8b5a54; }
+   .shelf i:nth-child(5) { height: 78%; background: #9a8649; }
+   .shelf i:nth-child(6) { height: 65%; background: #456456; transform: rotate(-9deg); transform-origin: bottom left; }
+   .shelf:hover i:nth-child(6) { transform: rotate(-9deg) translateY(-5px); }
+   
+   /* =========================================
+      2. CATEGORY GRID (Thể loại)
+      ========================================= */
+   .category-grid {
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
+     gap: 1.2rem;
+     margin-top: 1.5rem;
+   }
+   .category-card {
+     position: relative; 
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     padding: 2rem 1rem; 
+     background: var(--surface);
+     border: 1px solid var(--line);
+     border-radius: var(--radius);
+     text-decoration: none;
+     color: var(--ink);
+     font-weight: 700; 
+     font-size: 1.05rem;
+     overflow: hidden; 
+     transition: all 0.3s ease; 
+     box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+   }
+   .category-card::before {
+     content: '📖'; 
+     position: absolute;
+     font-size: 5rem; 
+     opacity: 0.05; 
+     bottom: -10px;
+     right: -10px;
+     transform: rotate(-15deg); 
+     transition: all 0.3s ease;
+     z-index: 0;
+   }
+   .category-card span {
+     position: relative;
+     z-index: 1;
+   }
+   .category-card:hover {
+     color: #ffffff; 
+     transform: translateY(-5px); 
+   }
+   /* Màu hover theo từng ô */
+   .category-card:nth-child(1):hover { background: #446957; border-color: #446957; box-shadow: 0 10px 20px rgba(68, 105, 87, 0.3); }
+   .category-card:nth-child(2):hover { background: #ac754d; border-color: #ac754d; box-shadow: 0 10px 20px rgba(172, 117, 77, 0.3); }
+   .category-card:nth-child(3):hover { background: #617780; border-color: #617780; box-shadow: 0 10px 20px rgba(97, 119, 128, 0.3); }
+   .category-card:nth-child(4):hover { background: #8b5a54; border-color: #8b5a54; box-shadow: 0 10px 20px rgba(139, 90, 84, 0.3); }
+   .category-card:nth-child(5):hover { background: #9a8649; border-color: #9a8649; box-shadow: 0 10px 20px rgba(154, 134, 73, 0.3); }
+   .category-card:nth-child(6):hover { background: #456456; border-color: #456456; box-shadow: 0 10px 20px rgba(69, 100, 86, 0.3); }
+   .category-card:hover::before {
+     opacity: 0.15; 
+     transform: rotate(0deg) scale(1.1); 
+     color: #ffffff; 
+   }
+   
+   /* =========================================
+      3. BOOK CARD (Thẻ sách) - ĐÃ GỘP
+      ========================================= */
+   .book-card {
+     display: flex;
+     flex-direction: column;
+     background: var(--surface);
+     border: 1px solid var(--line);
+     border-radius: var(--radius);
+     overflow: hidden;
+     text-decoration: none;
+     color: var(--ink);
+     transition: all 0.3s ease;
+     position: relative;
+   }
+   .book-card:hover {
+     transform: translateY(-8px); 
+     box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.15); 
+     border-color: var(--green); 
+   }
+   
+   /* Ảnh bìa / Placeholder */
+   .book-card .cover,
+   .book-card .placeholder {
+     width: 100%;
+     height: 240px; 
+     object-fit: cover;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     background: linear-gradient(135deg, var(--sand) 0%, #e8e0d5 100%);
+     border-bottom: 1px solid var(--line);
+     transition: all 0.3s ease;
+   }
+   .book-card:hover .cover,
+   .book-card:hover .placeholder {
+     transform: scale(1.05);
+   }
+   
+   /* Nội dung thẻ */
+   .book-card .card-body {
+     padding: 1.2rem;
+     display: flex;
+     flex-direction: column;
+     flex: 1; 
+   }
+   .book-category {
+     display: inline-block;
+     color: var(--green);
+     font-size: 0.75rem;
+     text-transform: uppercase;
+     letter-spacing: 0.5px;
+     font-weight: 700;
+     margin-bottom: 0.4rem;
+   }
+   .book-card h3 {
+     font-size: 1.1rem;
+     font-weight: 700;
+     margin: 0 0 0.3rem 0;
+     line-height: 1.4;
+     display: -webkit-box;
+     -webkit-line-clamp: 2;
+     -webkit-box-orient: vertical;
+     overflow: hidden;
+   }
+   .book-author {
+     font-size: 0.9rem;
+     color: var(--muted);
+     margin: 0 0 1rem 0;
+   }
+   .book-meta {
+     margin-top: auto;
+     padding-top: 1rem;
+     border-top: 1px dashed var(--line);
+     align-items: center;
+   }
+   
+   /* Badge & Trạng thái */
+   .book-card .badge {
+     background: var(--tint);
+     color: var(--green-dark);
+     font-size: 0.85rem;
+     padding: 0.3rem 0.6rem;
+     border-radius: 6px;
+     font-weight: 700;
+   }
+   .text-success { color: var(--green); font-weight: 600; }
+   .text-danger { color: var(--danger); font-weight: 600; }
+   
+   /* Nút Xem chi tiết (Hover hiện lên) */
+   .book-action {
+     margin-top: 1rem;
+     opacity: 0;
+     transform: translateY(10px);
+     transition: all 0.3s ease;
+     text-align: center;
+     background: var(--tint);
+     padding: 0.5rem;
+     border-radius: 6px;
+     font-weight: 600;
+     color: var(--green-dark);
+   }
+   .book-card:hover .book-action {
+     opacity: 1;
+     transform: translateY(0);
+   }
+   
+   /* =========================================
+      4. FEATURES GRID (Cam kết)
+      ========================================= */
+   .features-grid {
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+     gap: 2rem;
+     text-align: center;
+     padding: 2rem;
+     background: var(--surface);
+     border-radius: var(--radius);
+     border: 1px solid var(--line);
+   }
+   .feature-item h3 {
+     margin: 0.5rem 0;
+     font-size: 1.1rem;
+   }
+   
+   /* =========================================
+      5. RESPONSIVE
+      ========================================= */
+   @media (max-width: 800px) {
+     .hero {
+       grid-template-columns: 1fr;
+       text-align: center;
+     }
+     .hero p { margin-inline: auto; }
+     .shelf { height: 150px; margin-top: 2rem; }
+   }
+
+   /* =========================================
+   POST LIST (DIỄN ĐÀN GẦN ĐÂY)
+   ========================================= */
+
+/* 1. Danh sách bài đăng */
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Khoảng cách giữa các bài */
+}
+
+/* 2. Từng thẻ bài đăng */
+.post-row {
+  display: flex;
+  align-items: flex-start; /* Căn lề trên */
+  gap: 1.5rem;
+  padding: 1.2rem 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: var(--ink);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+/* Hiệu ứng hover: Nhích nhẹ sang phải và đổi màu viền */
+.post-row:hover {
+  border-color: var(--green);
+  background: var(--tint); /* Hoặc giữ nguyên nền, chỉ đổi viền */
+  transform: translateX(4px);
+}
+
+/* 3. Phần nội dung (Bên trái) */
+.post-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Tag (Trao đổi, Thanh lý...) */
+.post-header {
+  margin-bottom: 0.2rem;
+}
+/* Bạn có thể style riêng cho từng tag nếu muốn */
+.post-header .badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.6rem;
+  background: var(--tint);
+  color: var(--green-dark);
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+/* Tiêu đề bài viết */
+.post-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.4;
+  color: var(--ink);
+  /* Cắt chữ nếu dài quá 1 dòng */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Hiệu ứng gạch chân khi hover vào tiêu đề */
+.post-row:hover .post-title {
+  color: var(--green);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Thông tin tác giả & ngày tháng */
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.post-meta .dot {
+  font-size: 0.6rem;
+}
+
+/* 4. Hình ảnh Thumbnail (Nếu có) */
+.post-thumb {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  flex-shrink: 0; /* Không bị co lại khi màn hình nhỏ */
+}
+
+/* Responsive cho mobile */
+@media (max-width: 600px) {
+  .post-row {
+    padding: 1rem;
+  }
+  .post-title {
+    white-space: normal; /* Cho phép xuống dòng trên mobile */
+  }
+  .post-thumb {
+    display: none; /* Ẩn ảnh trên mobile cho gọn */
+  }
+}
+
+.post-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 1. Khung chứa tiêu đề */
+section > .spread {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end; /* Căn đáy để chữ và nút thẳng hàng */
+  margin-bottom: 2rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 2px solid var(--line); /* Đường kẻ ngang mờ */
+  position: relative;
+}
+
+/* 2. Tiêu đề (Khám phá thể loại) */
+section > .spread h2 {
+  margin: 0;
+  position: relative;
+  padding-left: 1rem; /* Tạo khoảng trống bên trái cho thanh dọc */
+}
+
+/* Thanh dọc màu xanh điểm nhấn */
+section > .spread h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10%;
+  height: 80%;
+  width: 5px;
+  background: var(--green); /* Màu chủ đạo */
+  border-radius: 4px;
+}
+
+/* 3. Link "Tất cả thể loại" (Biến thành nút) */
+section > .spread a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  background: var(--tint);
+  color: var(--green-dark);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 99px; /* Bo tròn hoàn toàn (pill) */
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* Hiệu ứng hover cho nút */
+section > .spread a:hover {
+  background: var(--green);
+  color: #ffffff;
+  transform: translateX(3px); /* Nhích nhẹ sang phải */
+}

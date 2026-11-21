@@ -1,0 +1,198 @@
+/* =========================================
+   KIỂM DUYỆT DIỄN ĐÀN (MANAGE FORUM) - HOÀN CHỈNH
+   ========================================= */
+
+   .manage-forum-page {
+    animation: fadeIn 0.4s ease-in-out;
+  }
+  
+  /* -----------------------------------------
+     1. HEADER (BANNER TIÊU ĐỀ)
+     ----------------------------------------- */
+  .manage-forum-page .page-header-banner {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .manage-forum-page .page-header-banner h1 {
+    font-family: "Source Sans 3", "Segoe UI", sans-serif !important;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--ink);
+    margin: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  
+  .manage-forum-page .page-header-banner h1::before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 32px;
+    background: var(--green);
+    border-radius: 4px;
+  }
+  
+  .manage-forum-page .page-header-banner .text-muted {
+    font-size: 1rem;
+    color: var(--muted);
+    margin: 0;
+    padding-left: 1.4rem;
+  }
+  
+  /* -----------------------------------------
+     2. SECTION (BÀI ĐĂNG / BÌNH LUẬN)
+     ----------------------------------------- */
+  .manage-forum-page section {
+    margin-bottom: 1.5rem; /* Thu gọn khoảng cách giữa các section */
+  }
+  
+  /* Thanh tiêu đề của từng section (Bài đăng / Bình luận) */
+  .manage-forum-page .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--surface); 
+    border: 1px solid var(--line); 
+    border-radius: var(--radius);
+    padding: 1.2rem 1.5rem; 
+    margin-bottom: 1rem; /* Kéo sát bảng dữ liệu bên dưới */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02); 
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .manage-forum-page .section-header h2 {
+    margin: 0;
+    font-size: 1.8rem; /* Tăng kích thước chữ */
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem; /* Khoảng cách giữa Icon và chữ */
+    font-weight: 800;
+    line-height: 1.2;
+  }
+  
+  /* Ô tìm kiếm */
+  .manage-forum-page .section-header input[type="search"] {
+    padding: 0 1rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    height: 42px;
+    outline: none;
+    transition: all 0.2s;
+    width: 300px;
+    max-width: 100%;
+    background: var(--surface); 
+    margin-left: auto; 
+  }
+  
+  .manage-forum-page .section-header input[type="search"]:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px var(--tint);
+  }
+  
+  /* -----------------------------------------
+     3. BẢNG DỮ LIỆU
+     ----------------------------------------- */
+  .manage-forum-page .table-scroll {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    overflow-x: auto;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  }
+  
+  .manage-forum-page .table-scroll table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+  
+  .manage-forum-page .table-scroll th {
+    background: var(--tint);
+    color: var(--green-dark);
+    font-weight: 700;
+    padding: 1rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--line);
+    white-space: nowrap;
+  }
+  
+  .manage-forum-page .table-scroll td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+    font-size: 0.95rem;
+  }
+  
+  .manage-forum-page .table-scroll tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .manage-forum-page .table-scroll tr:hover {
+    background: var(--paper);
+  }
+  
+  /* Nội dung bài đăng (giới hạn 2 dòng) */
+  .manage-forum-page .post-content-preview {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+  }
+  
+  /* -----------------------------------------
+     4. NÚT THAO TÁC
+     ----------------------------------------- */
+  .manage-forum-page .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .manage-forum-page .action-buttons button,
+  .manage-forum-page .action-buttons .secondary {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--muted);
+    text-decoration: none;
+  }
+  
+  .manage-forum-page .action-buttons button:hover,
+  .manage-forum-page .action-buttons .secondary:hover {
+    background: var(--tint);
+    color: var(--green-dark);
+    border-color: var(--green);
+  }
+  
+  /* -----------------------------------------
+     5. ANIMATION
+     ----------------------------------------- */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }

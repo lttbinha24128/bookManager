@@ -1,0 +1,147 @@
+/* =========================================
+   QUẢN LÝ NGƯỜI DÙNG (MANAGE USERS)
+   ========================================= */
+
+   .manage-users-page {
+    animation: fadeIn 0.4s ease-in-out;
+  }
+  
+  /* -----------------------------------------
+     1. HEADER (BANNER TIÊU ĐỀ)
+     ----------------------------------------- */
+  .manage-users-page .page-header-banner {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .manage-users-page .page-header-banner h1 {
+    font-family: "Source Sans 3", "Segoe UI", sans-serif !important;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--ink);
+    margin: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  
+  .manage-users-page .page-header-banner h1::before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 32px;
+    background: var(--green);
+    border-radius: 4px;
+  }
+  
+  .manage-users-page .page-header-banner .text-muted {
+    font-size: 1rem;
+    color: var(--muted);
+    margin: 0;
+    padding-left: 1.4rem;
+  }
+  
+  /* -----------------------------------------
+     2. TOOLBAR (THANH CÔNG CỤ)
+     ----------------------------------------- */
+  .manage-users-page .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    position: relative;
+    z-index: 100;
+  }
+  
+  .manage-users-page .toolbar input[type="search"] {
+    padding: 0 1rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    height: 42px;
+    outline: none;
+    transition: all 0.2s;
+    width: 300px;
+    margin-left: auto; /* Đẩy sang phải */
+    background: var(--surface);
+  }
+  
+  .manage-users-page .toolbar input[type="search"]:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px var(--tint);
+  }
+  
+  /* -----------------------------------------
+     3. BẢNG DỮ LIỆU
+     ----------------------------------------- */
+  .manage-users-page .table-scroll {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    overflow-x: auto;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  }
+  
+  .manage-users-page .table-scroll table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+  
+  .manage-users-page .table-scroll th {
+    background: var(--tint);
+    color: var(--green-dark);
+    font-weight: 700;
+    padding: 1rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--line);
+    white-space: nowrap;
+  }
+  
+  .manage-users-page .table-scroll td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+    font-size: 0.95rem;
+  }
+  
+  .manage-users-page .table-scroll tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .manage-users-page .table-scroll tr:hover {
+    background: var(--paper);
+  }
+  
+  /* Nút thao tác */
+  .manage-users-page .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+  }
+  
+  .manage-users-page .action-buttons button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    min-width: 60px;
+    border-radius: 6px;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
