@@ -19,11 +19,27 @@ app.use(express.json({ limit: '64kb' }));
 // Phục vụ ảnh tĩnh (nếu cần dùng cho các file không lưu trong DB)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'), { index: false }));
 
-// API lấy ảnh từ Database
-app.get('/api/images/:filename', async (req, res) => {
+app.use('/api', api);
+app.use('/api', (req, res) => res.status(404).json({ message: 'Không tìm thấy đường dẫn.' }));
+
+const client = path.join(__dirname, '../client/dist');
+app.use(express.static(client));
+app.get('/{*route}', (req, res, next) => {
+  if (req.path.startsWith('/uploads/') || path.extname(req.path)) return next();
+  res.sendFile(path.join(client, 'index.html'));
+});
+
+// ✅ Route lấy ảnh "vạn năng" sử dụng Regex để bắt mọi đường dẫn
+app.get(/^\/api\/images\/(.*)/, async (req, res) => {
   try {
+    // Lấy toàn bộ chuỗi phía sau /api/images/
+    let rawName = req.params[0]; 
+    
+    // Xóa các dấu / bị dư ở đầu hoặc chữ /uploads/
+    let cleanName = rawName.replace(/^\/+uploads\/+/, '').replace(/^\/+/, ''); 
+
     const Image = mongoose.model('Image'); 
-    const image = await Image.findOne({ filename: req.params.filename });
+    const image = await Image.findOne({ filename: cleanName });
     
     if (!image) {
       return res.status(404).json({ message: 'Không tìm thấy ảnh' });
@@ -37,15 +53,7 @@ app.get('/api/images/:filename', async (req, res) => {
   }
 });
 
-app.use('/api', api);
-app.use('/api', (req, res) => res.status(404).json({ message: 'Không tìm thấy đường dẫn.' }));
-
-const client = path.join(__dirname, '../client/dist');
-app.use(express.static(client));
-app.get('/{*route}', (req, res, next) => {
-  if (req.path.startsWith('/uploads/') || path.extname(req.path)) return next();
-  res.sendFile(path.join(client, 'index.html'));
-});
+app.use('/api', api); // Dòng này phải nằm DƯỚI route ảnh
 
 app.use((error, req, res, next) => {
   if (res.headersSent) return next(error);
