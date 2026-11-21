@@ -35,29 +35,27 @@ async function seed() {
   const reader = await User.findOne({ username: 'bandoc' });
   const reader2 = await User.findOne({ username: 'user2' });
 
-  // ==========================================
+  //   // ==========================================
   // 2. DỮ LIỆU SÁCH
   // ==========================================
   console.log('📚 Đang tạo dữ liệu Sách...');
   const booksData = [
-    ['Dế Mèn phiêu lưu ký', 'Tô Hoài', 'Văn học', 0, 4, 'Cuộc phiêu lưu của Dế Mèn qua nhiều vùng đất và những tình bạn mới.', '2c6ebc46-2311-47c0-ab93-bfcb0b05ce88.jpg'],
-    ['Tôi thấy hoa vàng trên cỏ xanh', 'Nguyễn Nhật Ánh', 'Văn học', 5000, 3, 'Câu chuyện tuổi thơ ở một làng quê Việt Nam.', '2c71b903-8b9a-41f9-a4e1-bb5fc26b17bb.jpg'],
-    ['Đất rừng phương Nam', 'Đoàn Giỏi', 'Văn học', 0, 2, 'Hành trình của An qua vùng sông nước Nam Bộ.', null],  
-    ['Sapiens: Lược sử loài người', 'Yuval Noah Harari', 'Lịch sử', 15000, 3, 'Hành trình phát triển của loài người từ thời tiền sử.', null],
-    ['Đắc Nhân Tâm', 'Dale Carnegie', 'Kỹ năng', 8000, 6, 'Nghệ thuật giao tiếp và thu phục lòng người.', '9a706bc2-1703-408b-858e-ed83dc0431bd.jpg'],
-    ['Tuổi trẻ đáng giá bao nhiêu', 'Rosie Nguyễn', 'Kỹ năng', 5000, 5, 'Sách truyền cảm hứng cho giới trẻ.', '56d1eeca-f944-42df-830c-d865f20a7cee.jpg'],
-    ['Vĩ đại do lựa chọn', 'Jim Collins', 'Kinh tế', 15000, 1, 'Những bài học về sự vĩ đại trong kinh doanh.', '058a8a3a-b1b2-439c-822a-df4618f55bbe.jpg'],
-    ['Cha giàu cha nghèo', 'Robert Kiyosaki', 'Kinh tế', 10000, 4, 'Những bài học về tư duy tài chính cá nhân.', '143a41e5-26c4-44ea-b81d-282c9bd119c0.webp'],
-    ['Đừng bao giờ đi ăn một mình', 'Keith Ferrazzi', 'Kỹ năng', 12000, 2, 'Nghệ thuật xây dựng mối quan hệ.', null],
-    ['Lược sử thời gian', 'Stephen Hawking', 'Khoa học', 9000, 3, 'Từ vụ nổ Big Bang đến lỗ đen.', null],
-    ['Bàn về tự do', 'John Stuart Mill', 'Chính trị', 0, 1, 'Tác phẩm kinh điển về triết lý tự do cá nhân.', '34065851-99ba-42e9-ad5f-7a2a776ea789.jpg'],
-    ['Homo Deus: Lược sử tương lai', 'Yuval Noah Harari', 'Lịch sử', 12000, 2, 'Dự đoán về tương lai của loài người.', 'bd6562cd-f75a-4445-8c69-7c8d07fed0f9.webp'],
-    ['Kinh tế học hài hước', 'Steven D. Levitt', 'Kinh tế', 12000, 1, 'Những góc nhìn thú vị về kinh tế qua các hiện tượng đời thường.', null],
-    ['Vũ trụ', 'Carl Sagan', 'Khoa học', 7000, 2, 'Một chuyến khám phá các vì sao, hành tinh và lịch sử khoa học.', 'e369437e-8ac5-4ec8-8717-0747b95c201c.jpg'],
-    ['Nhà giả kim', 'Paulo Coelho', 'Văn học', 10000, 2, 'Hành trình theo đuổi giấc mơ của cậu bé chăn cừu Santiago.', 'e30210b9-5faf-445f-b91e-a67fd311f7cc.jpg'],
-    ['Số đỏ', 'Vũ Trọng Phụng', 'Văn học', 3000, 5, 'Bức tranh trào phúng về xã hội Việt Nam thời Pháp thuộc.', 'c9b9278c-2a46-4831-8a9a-390d3fb3abe0.jpg'],
-    ['Gen: Lịch sử vạn vật', 'Siddhartha Mukherjee', 'Khoa học', 11000, 2, 'Khám phá về gen và di truyền học.', '954f5108-fcf0-4e99-8798-bd697e1e3376.jpg'],
-    ['Nhà đầu tư thông minh', 'Benjamin Graham', 'Kinh tế', 14000, 1, 'Kinh thánh về đầu tư giá trị.', null],
+    ['Dế Mèn phiêu lưu ký', 'Tô Hoài', 'Văn học', 0, 4, 'Cuộc phiêu lưu của Dế Mèn qua nhiều vùng đất và những tình bạn mới.', 'de-men-phieu-luu-ky.jpg'],
+    ['Tôi thấy hoa vàng trên cỏ xanh', 'Nguyễn Nhật Ánh', 'Văn học', 5000, 3, 'Câu chuyện tuổi thơ ở một làng quê Việt Nam.', 'toi-thay-hoa-vang-tren-co-xanh.jpg'],
+    ['Đất rừng phương Nam', 'Đoàn Giỏi', 'Văn học', 0, 2, 'Hành trình của An qua vùng sông nước Nam Bộ.', 'dat-rung-phuong-nam.jpg'],  
+    ['Sapiens: Lược sử loài người', 'Yuval Noah Harari', 'Lịch sử', 15000, 3, 'Hành trình phát triển của loài người từ thời tiền sử.', 'sapiens-luoc-su-loai-nguoi.jpg'],
+    ['Đắc Nhân Tâm', 'Dale Carnegie', 'Kỹ năng', 8000, 6, 'Nghệ thuật giao tiếp và thu phục lòng người.', 'dac-nhan-tam.jpg'],
+    ['Tuổi trẻ đáng giá bao nhiêu', 'Rosie Nguyễn', 'Kỹ năng', 5000, 5, 'Sách truyền cảm hứng cho giới trẻ.', 'tuoi-tre-dang-gia-bao-nhieu.jpg'],
+    ['Vĩ đại do lựa chọn', 'Jim Collins', 'Kinh tế', 15000, 1, 'Những bài học về sự vĩ đại trong kinh doanh.', 'vi-dai-do-lua-chon.jpg'],
+    ['Cha giàu cha nghèo', 'Robert Kiyosaki', 'Kinh tế', 10000, 4, 'Những bài học về tư duy tài chính cá nhân.', 'cha-giau-cha-ngheo.jpg'],
+    ['Đừng bao giờ đi ăn một mình', 'Keith Ferrazzi', 'Kỹ năng', 12000, 2, 'Nghệ thuật xây dựng mối quan hệ.', 'dung-bao-gio-di-an-mot-minh.jpg'],
+    ['Lược sử thời gian', 'Stephen Hawking', 'Khoa học', 9000, 3, 'Từ vụ nổ Big Bang đến lỗ đen.', 'luoc-su-thoi-gian.jpg'],
+    ['Bàn về tự do', 'John Stuart Mill', 'Chính trị', 0, 1, 'Tác phẩm kinh điển về triết lý tự do cá nhân.', 'ban-ve-tu-do.jpg'],
+    ['Homo Deus: Lược sử tương lai', 'Yuval Noah Harari', 'Lịch sử', 12000, 2, 'Dự đoán về tương lai của loài người.', 'homo-deus-luoc-su-tuong-lai.jpg'],
+    ['Kinh tế học hài hước', 'Steven D. Levitt', 'Kinh tế', 12000, 1, 'Những góc nhìn thú vị về kinh tế qua các hiện tượng đời thường.', 'kinh-te-hoc-hai-huoc.jpg'],
+    ['Vũ trụ', 'Carl Sagan', 'Khoa học', 7000, 2, 'Một chuyến khám phá các vì sao, hành tinh và lịch sử khoa học.', 'vu-tru.jpg'],
+    ['Nhà giả kim', 'Paulo Coelho', 'Văn học', 10000, 2, 'Hành trình theo đuổi giấc mơ của cậu bé chăn cừu Santiago.', 'nha-gia-kim.jpg'],
+    ['Số đỏ', 'Vũ Trọng Phụng', 'Văn học', 3000, 5, 'Bức tranh trào phúng về xã hội Việt Nam thời Pháp thuộc.', 'so-do.jpg'],
   ];
 
   for (const [title, author, name, dailyRate, quantity, description, image] of booksData) {
